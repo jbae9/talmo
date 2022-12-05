@@ -15,7 +15,7 @@ def home():
 
 # 피드 불러오기
 @app.route('/feed', methods=["GET"])
-def getFeed():
+def getFeedDB():
     db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
     curs = db.cursor()
 
@@ -49,7 +49,7 @@ def getFeed():
 
 # 피드 댓글을 DB에 등록하기
 @app.route("/feed/post", methods=["POST"])
-def saveComment():
+def saveCommentDB():
     db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
     curs = db.cursor()
 
@@ -63,6 +63,24 @@ def saveComment():
     db.commit()
     db.close()
     return jsonify({'msg': '등록 완료!'})
+
+
+# 피드 댓글을 DB에 삭제하기
+@app.route("/feed", methods=["delete"])
+def deleteCommentDB():
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
+    curs = db.cursor()
+
+    feedId = request.form['feedId_give']
+    print(feedId)
+
+    # feed 테이블에 feedId에 해당하는 댓글 삭제
+    sql = '''DELETE FROM talmo.feed WHERE feedId = %s'''
+    curs.execute(sql, (feedId))
+
+    db.commit()
+    db.close()
+    return jsonify({'msg': '삭제 완료!'})
 
 
 if __name__ == '__main__':
