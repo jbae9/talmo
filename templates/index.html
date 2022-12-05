@@ -133,19 +133,19 @@
                 <textarea
                   class="form-control"
                   placeholder="Leave a comment here"
-                  id="floatingTextarea2"
+                  id="inputComment"
                   style="height: 100px"
                 ></textarea>
                 <label for="floatingTextarea2">Comments</label>
               </div>
               <div class="mt-3 d-md-flex justify-content-md-end">
-                <button class="btn btn-primary" type="button">Button</button>
+                <button class="btn btn-primary" type="button" onclick="saveComment()">등록하기</button>
               </div>
             </div>
           </div>
           <!-- 게시글 등록 -->
           <!-- 불러온 게시글 -->
-          <div class="list-group mt-4">
+          <div class="list-group mt-4" id="feedList">
             <a
               href="#"
               class="list-group-item list-group-item-action active"
@@ -158,6 +158,8 @@
               <p class="mb-1">Some placeholder content in a paragraph.</p>
               <small>And some small print.</small>
             </a>
+
+
             <a href="#" class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">List group item heading</h5>
@@ -165,7 +167,11 @@
               </div>
               <p class="mb-1">Some placeholder content in a paragraph.</p>
               <small class="text-muted">And some muted small print.</small>
+              <button type="button" class="btn btn-danger" style="float:right" onclick="deleteComment()">삭제</button>
+              <button type="button" class="btn btn-success" style="float:right; margin-right:5px" onclick="editComment()">수정</button>
             </a>
+
+
             <a href="#" class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">List group item heading</h5>
