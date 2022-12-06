@@ -45,9 +45,10 @@ function getFeed() {
                                     </div>
                                     <div>
                                     <p class="mb-1" id="${divFeedCommentId}">${comment}</p>
+                                    <small>${date}</small>
                                     </div>
                                     <button type="button" class="btn btn-danger" style="float:right" onclick="deleteComment(${feedId})">삭제</button>
-                                    <button type="button" class="btn btn-success" style="float:right; margin-right:5px" onclick="showInputEdit(${divFeedCommentId},${comment})">수정</button>
+                                    <button type="button" class="btn btn-success" style="float:right; margin-right:5px" onclick="showInputEdit(${divFeedCommentId},${divFeedId})">수정</button>
                                 </a>`
 
                 $('#feedList').append(temp_html)
@@ -108,7 +109,7 @@ function deleteComment(feedId){
 }
 
 // 수정 버튼 눌렀을 때 입력칸 보여줌
-function showInputEdit(divFeedCommentId){
+function showInputEdit(divFeedCommentId, divFeedId){
     console.log(divFeedCommentId)
     console.log(divFeedCommentId.innerHTML)
     const oldComment = divFeedCommentId.innerHTML
@@ -117,9 +118,17 @@ function showInputEdit(divFeedCommentId){
     txtarea.className = 'form-control'
     txtarea.id = 'editComment'
     txtarea.style = 'height: 50px'
-    txtarea.innerHTML = oldComment + '<br>'
+    txtarea.innerHTML = oldComment 
     
     divFeedCommentId.parentNode.replaceChild(txtarea, divFeedCommentId);
+    
+    let confirmButton = document.createElement('button')
+    confirmButton.className = 'btn btn-primary'
+    confirmButton.onclick = console.log(divFeedId)
+    confirmButton.innerHTML = '확인'
+
+    divFeedId.append(confirmButton)
+
 
 }
 
