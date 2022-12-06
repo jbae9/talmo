@@ -12,11 +12,11 @@ ca = certifi.where()
 app = Flask(__name__)
 
 
-app.secret_key = 'your secret key'
+app.secret_key = 'my secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'sksms9604'
+app.config['MYSQL_PASSWORD'] = '비밀번호를 여기 입력하세용 :)'
 app.config['MYSQL_DB'] = 'talmo'
 
 # MySQL 실행
@@ -38,6 +38,7 @@ def login():
             session['loggedin'] = True
             session['uniqueId'] = account['uniqueId']
             session['id'] = account['id']
+            session['name'] = account['name']
             return redirect(url_for('index'))
         else:
             msg = '잘못된 아이디/비밀번호 입니다!'
@@ -49,13 +50,14 @@ def logout():
    session.pop('loggedin', None)
    session.pop('uniqueId', None)
    session.pop('id', None)
+   session.pop('name', None)
    return redirect(url_for('login'))
 
 
 @app.route('/index',)
 def index():
     if 'loggedin' in session:
-        return render_template('index.html', id=session['id'])
+        return render_template('index.html', name=session['name'])
     return redirect(url_for('login'))
 
 @app.route('/')
@@ -65,7 +67,7 @@ def home():
 # 피드 불러오기
 @app.route('/feed', methods=["GET"])
 def getFeedDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
+    db = mysql.connect
     curs = db.cursor()
 
     # feed 테이블에서 feedId, feedDate 불러오기
@@ -99,7 +101,7 @@ def getFeedDB():
 # 피드 댓글을 DB에 등록하기
 @app.route("/feed/post", methods=["POST"])
 def saveCommentDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
+    db = mysql.connect
     curs = db.cursor()
 
     feedComment = request.form['comment_give']
@@ -117,7 +119,7 @@ def saveCommentDB():
 # 피드 댓글을 DB에 삭제하기
 @app.route("/feed", methods=["delete"])
 def deleteCommentDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
+    db = mysql.connect
     curs = db.cursor()
 
     feedId = request.form['feedId_give']

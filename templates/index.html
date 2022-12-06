@@ -96,7 +96,7 @@
                   d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
                 />
               </svg>
-              <span class="fs-4">이정기</span>
+              <span class="fs-4">{{ name }}</span>
             </a>
             <hr />
             <ul class="nav nav-pills flex-column mb-auto">
@@ -146,40 +146,6 @@
           <!-- 게시글 등록 -->
           <!-- 불러온 게시글 -->
           <div class="list-group mt-4" id="feedList">
-            <a
-              href="#"
-              class="list-group-item list-group-item-action active"
-              aria-current="true"
-            >
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small>3 days ago</small>
-              </div>
-              <p class="mb-1">Some placeholder content in a paragraph.</p>
-              <small>And some small print.</small>
-            </a>
-
-
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small class="text-muted">3 days ago</small>
-              </div>
-              <p class="mb-1">Some placeholder content in a paragraph.</p>
-              <small class="text-muted">And some muted small print.</small>
-              <button type="button" class="btn btn-danger" style="float:right" onclick="deleteComment()">삭제</button>
-              <button type="button" class="btn btn-success" style="float:right; margin-right:5px" onclick="editComment()">수정</button>
-            </a>
-
-
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small class="text-muted">3 days ago</small>
-              </div>
-              <p class="mb-1">Some placeholder content in a paragraph.</p>
-              <small class="text-muted">And some muted small print.</small>
-            </a>
           </div>
           <!-- 불러온 게시글 -->
           <!-- 페이지네이션 -->
