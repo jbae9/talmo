@@ -33,8 +33,8 @@ function getFeed() {
                                             <p class="mb-1" id="${divFeedCommentId}">${comment}</p>
                                             <div id='divEdit${feedId}' style='display: none'>
                                                 <textarea class='form-control' id='editCommment${feedId}' style='height: 80px' placeholder='수정할 내용을 입력해주세요'></textarea>
-                                                <button class='btn btn-primary' onclick='editComment(${feedId})'>확인</button>
-                                                <button class='btn btn-danger' onclick="cancelEdit('${feedId}')">취소</button>
+                                                <button class='btn btn-primary' style='margin-top:5px' onclick='editComment(${feedId})'>확인</button>
+                                                <button class='btn btn-danger' style='margin-top:5px' onclick="cancelEdit('${feedId}')">취소</button>
                                             </div>
                                         </div>
                                         <button type="button" class="btn btn-danger" style="float:right" onclick="deleteComment(${feedId})">삭제</button>
@@ -57,11 +57,11 @@ function saveComment() {
     
     // MySQL의 DATETIME 포맷으로 수정: 'YYYY-MM-DD hh:mm:ss'
     date = date.getUTCFullYear() + '-' +
-        ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
-        ('00' + date.getUTCDate()).slice(-2) + ' ' + 
-        ('00' + date.getUTCHours()).slice(-2) + ':' + 
-        ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
-        ('00' + date.getUTCSeconds()).slice(-2)
+        ('00' + (date.getMonth()+1)).slice(-2) + '-' +
+        ('00' + date.getDate()).slice(-2) + ' ' + 
+        ('00' + date.getHours()).slice(-2) + ':' + 
+        ('00' + date.getMinutes()).slice(-2) + ':' + 
+        ('00' + date.getSeconds()).slice(-2)
 
     $.ajax({
         type: 'POST',
@@ -130,11 +130,11 @@ function editComment(feedId){
     
     // MySQL의 DATETIME 포맷으로 수정: 'YYYY-MM-DD hh:mm:ss'
     date = date.getUTCFullYear() + '-' +
-        ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
-        ('00' + date.getUTCDate()).slice(-2) + ' ' + 
-        ('00' + date.getUTCHours()).slice(-2) + ':' + 
-        ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
-        ('00' + date.getUTCSeconds()).slice(-2)
+        ('00' + (date.getMonth()+1)).slice(-2) + '-' +
+        ('00' + date.getDate()).slice(-2) + ' ' + 
+        ('00' + date.getHours()).slice(-2) + ':' + 
+        ('00' + date.getMinutes()).slice(-2) + ':' + 
+        ('00' + date.getSeconds()).slice(-2)
 
     console.log(date)
     
