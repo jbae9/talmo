@@ -33,9 +33,9 @@
     <!-- 해더영역 -->
     <header class="bdHeader fixed-top">
       <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-        <div class="container">
+        <div class="container-fluid">
           <!-- 로고 -->
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="/index">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="35"
@@ -60,8 +60,8 @@
           >
             <div class="navbar-nav">
               <a class="nav-link active" aria-current="page" href="#">Home</a>
-              <a class="nav-link" href="#">Features</a>
-              <a class="nav-link" href="#">Pricing</a>
+              <a class="nav-link" href="/mypage">MyPage</a>
+              <a class="nav-link" href="/logout">Logout</a>
             </div>
           </div>
           <!-- 네비게이션 -->
@@ -79,7 +79,7 @@
             class="d-flex flex-column flex-shrink-0 bg-white"
           >
             <a
-              href="/"
+              href="/index"
               class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
             >
               <svg
@@ -96,12 +96,12 @@
                   d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
                 />
               </svg>
-              <span class="fs-4">{{ name }}</span>
+              <span class="fs-4">{{ id }}</span>
             </a>
             <hr />
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">
+                <a href="/index" class="nav-link active" aria-current="page">
                   Home
                 </a>
               </li>
