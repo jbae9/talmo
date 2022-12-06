@@ -14,42 +14,32 @@ function getFeed() {
             let rows = response
 
             for (let i = 0; i < rows.length; i++) {
-                // let name = rows[i]['name']
-                // let comment = rows[i]['feedComment']
-                // let date = rows[i]['feedDate']
-                // let feedIdTemp = rows[i]['feedId']
-
                 let feedId = rows[i][0]
                 let date = rows[i][1]
                 let comment = rows[i][2]
+                let name = rows[i][3]
                 
                 // div id가 숫자로만 구성될 수 없으니 feedId# 으로 수정
                 let divFeedId = 'feedId' + feedId
                 let divFeedCommentId = 'feedCommentId' + feedId
 
                 // 받은 정보를 HTML로 전환
-                // let temp_html = `<a href="#" class="list-group-item list-group-item-action" id="${feedId}">
-                //                     <div class="d-flex w-100 justify-content-between">
-                //                     <h5 class="mb-1">${name}</h5>
-                //                     <small class="text-muted">${date}</small>
-                //                     </div>
-                //                     <p class="mb-1">${comment}</p>
-                //                     <button type="button" class="btn btn-danger" style="float:right" onclick="deleteComment()">삭제</button>
-                //                     <button type="button" class="btn btn-success" style="float:right; margin-right:5px" onclick="editComment()">수정</button>
-                //                 </a>`
-
-                let temp_html = `<a href="#" class="list-group-item list-group-item-action" id="${divFeedId}">
-                                    <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Name</h5>
-                                    <small class="text-muted">${date}</small>
-                                    </div>
-                                    <div>
-                                    <p class="mb-1" id="${divFeedCommentId}">${comment}</p>
-                                    <small>${date}</small>
-                                    </div>
-                                    <button type="button" class="btn btn-danger" style="float:right" onclick="deleteComment(${feedId})">삭제</button>
-                                    <button type="button" class="btn btn-success" style="float:right; margin-right:5px" onclick="showInputEdit(${divFeedCommentId},${divFeedId})">수정</button>
-                                </a>`
+                let temp_html = `  <a href="#" class="list-group-item list-group-item-action" id="${divFeedId}">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">${name}</h5>
+                                        </div>
+                                        <small class="text-muted">${date}</small>
+                                        <div>
+                                            <p class="mb-1" id="${divFeedCommentId}">${comment}</p>
+                                            <div id='divEdit${feedId}' style='display: none'>
+                                                <textarea class='form-control' id='editCommment${feedId}' style='height: 80px' placeholder='수정할 내용을 입력해주세요'></textarea>
+                                                <button class='btn btn-primary' onclick='editComment(${feedId})'>확인</button>
+                                                <button class='btn btn-danger' onclick="cancelEdit('${feedId}')">취소</button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-danger" style="float:right" onclick="deleteComment(${feedId})">삭제</button>
+                                        <button type="button" class="btn btn-success" style="float:right; margin-right:5px" onclick="showInputEdit('${feedId}')">수정</button>
+                                    </a>`
 
                 $('#feedList').append(temp_html)
             }
@@ -96,7 +86,7 @@ function deleteComment(feedId){
     $.ajax({
         type: 'DELETE',
         // url 수정 필요 `/feed/${feedId}`
-        url: '/feed',
+        url: '/feed/' + feedId,
         data: {
                 feedId_give: feedId
             },
@@ -109,38 +99,34 @@ function deleteComment(feedId){
 }
 
 // 수정 버튼 눌렀을 때 입력칸 보여줌
-function showInputEdit(divFeedCommentId, divFeedId){
-    console.log(divFeedCommentId)
-    console.log(divFeedCommentId.innerHTML)
-    const oldComment = divFeedCommentId.innerHTML
-       
-    let txtarea = document.createElement('textarea')
-    txtarea.className = 'form-control'
-    txtarea.id = 'editComment'
-    txtarea.style = 'height: 50px'
-    txtarea.innerHTML = oldComment 
-    
-    divFeedCommentId.parentNode.replaceChild(txtarea, divFeedCommentId);
-    
-    let confirmButton = document.createElement('button')
-    confirmButton.className = 'btn btn-primary'
-    confirmButton.onclick = console.log(divFeedId)
-    confirmButton.innerHTML = '확인'
-
-    divFeedId.append(confirmButton)
-
-
+function showInputEdit(feedId){
+    let divId = 'divEdit' + feedId
+    let div = document.getElementById(divId)
+    if (div.style.display === 'none') {
+        div.style.display = "block"
+    }
 }
+
+// 수정 취소할 때 textarea 숨기기
+function cancelEdit(feedId){
+    let divId = 'divEdit' + feedId
+    let div = document.getElementById(divId)
+    if (div.style.display === 'block') {
+        div.style.display = 'none'
+    }
+}
+
 
 // 피드 댓글 수정
 function editComment(feedId){
     // div Id는 'feedId' + feedId숫자
     let divId = 'feedId' + feedId
 
-    let comment = $('#inputComment').val()
+    const editTextAreaId = 'editCommment' + feedId
+
+    
+    let comment = document.getElementById(editTextAreaId).value
     let date = new Date()
-    // 로그인된 유저의 uniqueId 받아와야함
-    // let uid = 
     
     // MySQL의 DATETIME 포맷으로 수정: 'YYYY-MM-DD hh:mm:ss'
     date = date.getUTCFullYear() + '-' +
@@ -150,13 +136,15 @@ function editComment(feedId){
         ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
         ('00' + date.getUTCSeconds()).slice(-2)
 
+    console.log(date)
     
     $.ajax({
         type: 'PUT',
-        // url 수정 필요 `/feed/${feedId}`
-        url: '/feed',
+        url: '/feed/' + feedId,
         data: {
-                feedId_give: feedId
+                feedId_give: feedId,
+                comment_give: comment,
+                date_give: date
             },
         success: function (response) {
             alert(response['msg'])
