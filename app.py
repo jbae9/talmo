@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from flask_mysqldb import MySQL
-import MySQLdb.cursors
-import re
+import mysql.connector
 
 import pymysql
 import json
@@ -11,16 +9,10 @@ ca = certifi.where()
 
 app = Flask(__name__)
 
-
 app.secret_key = 'my secret key'
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'password'
-app.config['MYSQL_DB'] = 'talmo'
-
-# MySQL 실행
-mysql = MySQL(app)
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+cursor = connection.cursor()
 
 def getDB():
     db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
@@ -34,19 +26,18 @@ def login():
         id = request.form['id']
         pw = request.form['pw']
 
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM account WHERE id = %s AND pw = %s', (id, pw))
         account = cursor.fetchone()
     
         if account:
             session['loggedin'] = True
-            session['uniqueId'] = account['uniqueId']
-            session['id'] = account['id']
-            session['name'] = account['name']
+            session['uniqueId'] = account[0]
+            session['id'] = account[1]
+            session['name'] = account[3]
             return redirect(url_for('index'))
         else:
             msg = '잘못된 아이디/비밀번호 입니다!'
-    return render_template('signIn.html', msg=msg)
+    return render_template('login.html', msg=msg)
 
 # 로그아웃
 @app.route('/logout')
@@ -57,16 +48,36 @@ def logout():
    session.pop('name', None)
    return redirect(url_for('login'))
 
-
+# 로그인 됬을 때 메인페이지로 이동 id=session['id']
 @app.route('/index',)
 def index():
     if 'loggedin' in session:
-        return render_template('index.html', name=session['name'])
+        return render_template('index.html', id=session['id'])
     return redirect(url_for('login'))
 
+# 홈 눌렀을 때 메인페이지 이동
 @app.route('/')
 def home():
    return render_template('index.html')
+
+# 마이페이지
+@app.route('/mypage')
+def mypage():
+    if 'loggedin' in session:
+        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        return render_template('myPage.html', account=account)
+    return redirect(url_for('login'))
+
+# 회원탈퇴
+@app.route('/removeUser')
+def removeUser():
+    if 'loggedin' in session:
+        cursor.execute('DELETE FROM account WHERE id = %s', (session['id'],))
+        connection.commit()
+        connection.close()
+    return redirect(url_for('login'))
+
 
 # 피드 불러오기
 @app.route('/feed', methods=["GET"])
@@ -100,7 +111,7 @@ def getFeedDB():
     return [uniqueId, rowsJSON]
 
 # 피드 댓글을 DB에 등록하기
-@app.route("/feed/post", methods=["POST"])
+@app.route('/feed/post', methods=["POST"])
 def saveCommentDB():
     db = getDB()
     curs = db.cursor()
