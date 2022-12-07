@@ -173,6 +173,22 @@ def editCommentDB(feedId):
     db.close()
     return jsonify({'msg': '수정 완료!'})
 
+# 회원가입
+@app.route("/Account", methods=["POST"])
+def Account():
+    db = getDB()
+    curs = db.cursor()
+
+    id = request.form['id_give']
+    pwd = request.form['pwd_give']
+    name = request.form['name_give']
+
+    sql = '''insert into account (id, pw, name) values(%s,%s,%s)'''
+    curs.execute(sql, (id, pwd, name))
+
+    db.commit()
+    db.close()
+    return jsonify({'msg': '기록 완료!'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
