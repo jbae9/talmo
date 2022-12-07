@@ -78,7 +78,7 @@ def getFeedDB():
     # account 테이블이랑 uniqueId로 LEFT JOIN해서 name 불러오기
     # 최신순으로 등록된 데이터을 받음
     sql = """
-    SELECT 	feedId,
+    SELECT feedId,
 		date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
 		feedComment,
 		a.name,

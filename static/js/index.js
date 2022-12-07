@@ -172,3 +172,70 @@ function editComment(feedId){
         }
     });
 }
+
+
+// ----------- 날씨 API -------------
+
+// 문서가 준비됐을 때 위치 불러오기
+$(document).ready(
+function getLocation() {
+    const x = document.getElementById('divWeather')
+    let temp_html = ``
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, function(error) {
+        if (error.code == error.PERMISSION_DENIED)
+            temp_html = '<p class="text-center">위치 권한이 없습니다 :(<br>현재 날씨를 보고 싶으면 위치 권한을 승인해주세요!</p>'
+            x.innerHTML = temp_html;
+      });
+    } else {
+      x.innerHTML = "이 브라우저에는 Geolocation 사용 불가입니다.";
+    }
+  }
+);
+
+function showPosition(position) {
+    const x = document.getElementById('divWeather')
+    x.innerHTML = "Latitude: " + position.coords.latitude +
+    "<br>Longitude: " + position.coords.longitude;
+
+    openWeather(position.coords.latitude,position.coords.longitude)
+}
+
+function openWeather(lat, lon) {
+    $.ajax({
+        type: 'GET',
+        url: `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=2545f86b909c0f5a5f7d198c9abf1a67&lang=kr&units=metric`,
+        data: {},
+        success: function (response) {
+            const x = document.getElementById('divWeather')
+
+            const weatherIconId = response['weather'][0]['icon']
+
+            const weatherDescription = response['weather'][0]['description']
+            const weatherTemp = response['main']['temp']
+            const weatherFeelsLike = response['main']['feels_like']
+            const weatherTempMin = response['main']['temp_min']
+            const weatherTempMax = response['main']['temp_max']
+
+            const city = response['name']
+            const country = response['sys']['country']
+
+            let temp_html = `<p class="text-center" style="margin-bottom:0">현재 위치: ${city}, ${country}</p>
+                            <p class="text-muted text-center" style="font-size:small; margin-bottom:0">PC로 접속하면 실제 계신 위치와 차이가 발생할 수 있습니다.</p>
+                            <div class="justify-content-center" style="display:flex">
+                            <img style="position:relative" src="http://openweathermap.org/img/wn/${weatherIconId}@2x.png">
+                            <div style="position:relative; padding-top: 20px">
+                                <h3>${weatherTemp}°C</h3>
+                                <p style="font-size:16px">${weatherDescription}</p>
+                            </div>
+                            </div>
+                            <p class="text-center">
+                            체감 온도: ${weatherFeelsLike}°C<br>
+                            최저 기온: ${weatherTempMin}°C<br>
+                            최고 기온: ${weatherTempMax}°C
+                            </p>`
+            
+            x.innerHTML = temp_html
+        }
+    })
+}
