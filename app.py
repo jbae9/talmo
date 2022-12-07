@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from flask_mysqldb import MySQL
-import MySQLdb.cursors
-import re
+import mysql.connector
 
 import pymysql
 import json
@@ -9,19 +7,12 @@ import json
 import certifi
 ca = certifi.where()
 
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+cursor = connection.cursor()
+
 app = Flask(__name__)
 
-
 app.secret_key = 'my secret key'
-
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'sksms9604'
-app.config['MYSQL_DB'] = 'talmo'
-app.config['MYSQL_CHARSET']= 'utf8'
-
-# MySQL 실행
-mysql = MySQL(app)
 
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
@@ -31,15 +22,14 @@ def login():
         id = request.form['id']
         pw = request.form['pw']
 
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM account WHERE id = %s AND pw = %s', (id, pw))
         account = cursor.fetchone()
     
         if account:
             session['loggedin'] = True
-            session['uniqueId'] = account['uniqueId']
-            session['id'] = account['id']
-            session['name'] = account['name']
+            session['uniqueId'] = account[0]
+            session['id'] = account[1]
+            session['name'] = account[3]
             return redirect(url_for('index'))
         else:
             msg = '잘못된 아이디/비밀번호 입니다!'
@@ -70,7 +60,6 @@ def home():
 @app.route('/mypage')
 def mypage():
     if 'loggedin' in session:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
         account = cursor.fetchone()
         return render_template('myPage.html', account=account)
@@ -80,10 +69,9 @@ def mypage():
 @app.route('/removeUser')
 def removeUser():
     if 'loggedin' in session:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('DELETE FROM account WHERE id = %s', (session['id'],))
-        mysql.connection.commit()
-        mysql.connection.close()
+        connection.commit()
+        connection.close()
     return redirect(url_for('login'))
 
 
