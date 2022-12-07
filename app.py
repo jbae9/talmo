@@ -81,13 +81,15 @@ def getFeedDB():
     SELECT 	feedId,
 		date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
 		feedComment,
-		a.name
+		a.name,
+        f.uniqueId
     FROM talmo.feed as f 
     LEFT JOIN talmo.account as a
-    ON f.uniqueID = a.uniqueId
+    ON f.uniqueId = a.uniqueId
     ORDER BY feedDate desc
     """
-    
+    uniqueId = session['uniqueId']
+
     curs.execute(sql)
     rows = curs.fetchall()
     rowsJSON = json.loads(json.dumps(rows, ensure_ascii=False, indent=4, sort_keys=True, default=str))
@@ -95,7 +97,7 @@ def getFeedDB():
     db.commit()
     db.close()
 
-    return rowsJSON
+    return [uniqueId, rowsJSON]
 
 # 피드 댓글을 DB에 등록하기
 @app.route("/feed/post", methods=["POST"])
