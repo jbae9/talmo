@@ -125,10 +125,12 @@ function saveAccount() {
         return false;
     }
 
+    img = defaultImg()
+
     $.ajax({
         type: "POST",
         url: "/signUp",
-        data: {'id_give': id, 'name_give': name, 'pwd_give': pwd},
+        data: {'id_give': id, 'name_give': name, 'pwd_give': pwd, 'img_give':img},
         success: function (response) {
             alert(response["msg"])
             window.location.replace('/')

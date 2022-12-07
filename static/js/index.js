@@ -14,6 +14,8 @@ function getFeed() {
             let rows = response[1]
             const myUniqueId = response[0]
 
+            renderPagination(rows.length)
+
             for (let i = 0; i < rows.length; i++) {
                 let feedId = rows[i][0]
                 let date = rows[i][1]
@@ -64,6 +66,33 @@ function getFeed() {
             }
         }
     });
+}
+
+// Pagination HTML 렌더링
+function renderPagination(dataLength){
+    // 한 페이지에 데이터 5개가 들어가면 필요한 총 페이지
+    let totalPage = Math.ceil(dataLength/5)
+
+    // 페이지네이션 HTML 첫 부분
+    let temp_html = ``
+
+    let div = document.getElementById('divPagination')
+    for(let i=1; i<=totalPage; i++){
+        let a = document.createElement('a')
+        a.class = 'page-link'
+        a.innerHTML = i
+
+        let li = document.createElement('li')
+        li.class = 'page-item'
+        li.innerHTML = a
+
+        div.appendChild(li)
+    }
+
+    
+    
+    // div.append(temp_html)
+
 }
 
 

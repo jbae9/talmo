@@ -12,13 +12,13 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='wjdrl')
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='password')
 
 cursor = connection.cursor()
 
 
 def getDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='wjdrl', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
     return db
 
 
