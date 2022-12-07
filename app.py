@@ -5,6 +5,7 @@ import pymysql
 import json
 
 import certifi
+
 ca = certifi.where()
 
 app = Flask(__name__)
@@ -14,9 +15,11 @@ app.secret_key = 'my secret key'
 connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
 cursor = connection.cursor()
 
+
 def getDB():
     db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
     return db
+
 
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
@@ -28,7 +31,7 @@ def login():
 
         cursor.execute('SELECT * FROM account WHERE id = %s AND pw = %s', (id, pw))
         account = cursor.fetchone()
-    
+
         if account:
             session['loggedin'] = True
             session['uniqueId'] = account[0]
@@ -39,14 +42,16 @@ def login():
             msg = '잘못된 아이디/비밀번호 입니다!'
     return render_template('login.html', msg=msg)
 
+
 # 로그아웃
 @app.route('/logout')
 def logout():
-   session.pop('loggedin', None)
-   session.pop('uniqueId', None)
-   session.pop('id', None)
-   session.pop('name', None)
-   return redirect(url_for('login'))
+    session.pop('loggedin', None)
+    session.pop('uniqueId', None)
+    session.pop('id', None)
+    session.pop('name', None)
+    return redirect(url_for('login'))
+
 
 # 로그인 됬을 때 메인페이지로 이동 id=session['id']
 @app.route('/index')
@@ -55,10 +60,18 @@ def index():
         return render_template('index.html', id=session['id'])
     return redirect(url_for('login'))
 
+
 # 홈 눌렀을 때 메인페이지 이동
 @app.route('/')
 def home():
-   return render_template('index.html')
+    return render_template('index.html')
+
+
+# 홈 눌렀을 때 메인페이지 이동
+@app.route('/signUp')
+def signUp():
+    return render_template('signUp.html')
+
 
 # 마이페이지
 @app.route('/mypage')
@@ -68,6 +81,7 @@ def mypage():
         account = cursor.fetchone()
         return render_template('myPage.html', account=account)
     return redirect(url_for('login'))
+
 
 # 회원탈퇴
 @app.route('/removeUser')
@@ -109,6 +123,7 @@ def getFeedDB():
     db.close()
 
     return [uniqueId, rowsJSON]
+
 
 # 피드 댓글을 DB에 등록하기
 @app.route('/feed/post', methods=["POST"])
@@ -163,7 +178,22 @@ def editCommentDB(feedId):
     db.close()
     return jsonify({'msg': '수정 완료!'})
 
+# 회원가입
+@app.route("/signUp", methods=["POST"])
+def Account():
+    db = getDB()
+    curs = db.cursor()
 
+    id = request.form['id_give']
+    pwd = request.form['pwd_give']
+    name = request.form['name_give']
+
+    sql = '''insert into account (id, pw, name) values(%s,%s,%s)'''
+    curs.execute(sql, (id, pwd, name))
+
+    db.commit()
+    db.close()
+    return jsonify({'msg': '기록 완료!'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

@@ -17,3 +17,8 @@ body {
 .card-body {
   width: 350px;
 }
+
+/*경고문구 숨김 처리*/
+#myForm .help-block {
+    display: none;
+}
