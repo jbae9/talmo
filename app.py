@@ -68,6 +68,12 @@ def home():
     return render_template('index.html')
 
 
+# 홈 눌렀을 때 메인페이지 이동
+@app.route('/signUp')
+def signUp():
+    return render_template('signUp.html')
+
+
 # 마이페이지
 @app.route('/mypage')
 def mypage():
@@ -174,7 +180,7 @@ def editCommentDB(feedId):
     return jsonify({'msg': '수정 완료!'})
 
 # 회원가입
-@app.route("/Account", methods=["POST"])
+@app.route("/signUp", methods=["POST"])
 def Account():
     db = getDB()
     curs = db.cursor()

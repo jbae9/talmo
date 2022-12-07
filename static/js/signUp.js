@@ -127,11 +127,11 @@ function saveAccount() {
 
     $.ajax({
         type: "POST",
-        url: "/Account",
+        url: "/signUp",
         data: {'id_give': id, 'name_give': name, 'pwd_give': pwd},
         success: function (response) {
             alert(response["msg"])
-            window.location.href = "/singIn.html"
+            window.location.href = "/login"
             window.location.reload()
         }
     });
