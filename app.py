@@ -11,11 +11,11 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
 cursor = connection.cursor()
 
 def getDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
     return db
 
 # 로그인
@@ -49,7 +49,7 @@ def logout():
    return redirect(url_for('login'))
 
 # 로그인 됬을 때 메인페이지로 이동 id=session['id']
-@app.route('/index',)
+@app.route('/index')
 def index():
     if 'loggedin' in session:
         return render_template('index.html', id=session['id'])
@@ -89,7 +89,7 @@ def getFeedDB():
     # account 테이블이랑 uniqueId로 LEFT JOIN해서 name 불러오기
     # 최신순으로 등록된 데이터을 받음
     sql = """
-    SELECT 	feedId,
+    SELECT feedId,
 		date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
 		feedComment,
 		a.name,
