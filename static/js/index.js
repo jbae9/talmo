@@ -56,6 +56,61 @@ function getFeed() {
     });
 }
 
+// 페이지네이션 //
+//
+// function Pagination() {
+//     $.ajax({
+//         url: '/feed', // url 수정 필요
+//         type: 'POST',
+//         data: {
+//             offset: 0
+//         },
+//         success: function(res) {
+//
+//             var wishObj = JSON.parse(res);
+//             $('#ulist').empty();
+//             $('#ulist').empty();
+//             $('#listTemplate').tmpl(wishObj).appendTo('#ulist');
+//
+//         },
+//         error: function(error) {
+//             console.log(error);
+//         }
+//     });
+// }
+
+
+
+async function getPaginatedUsers(e) {
+    const data= {
+        offset: 5
+        commentPerPage: e.target.innerText
+    };
+
+    const res = await fetch("/feed"){
+        method: "POST"
+        body: JSON.stringify(data)
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+     });
+  console.log(res.json().then((data) => console.log(data)));
+  }
+
+  const handleOnclick = (e) => {
+    console.log(e.target.innerText);
+  };
+
+  document
+    .getElementById("button_1")
+    .addEventListener("click", (e) => getPaginatedUsers(e));
+  document
+    .getElementById("button_2")
+    .addEventListener("click", (e) => getPaginatedUsers(e));
+
+
+
 
 // 피드 댓글 저장하기
 function saveComment() {
