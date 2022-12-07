@@ -17,7 +17,7 @@ cursor = connection.cursor()
 
 
 def getDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
     return db
 
 
