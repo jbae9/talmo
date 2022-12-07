@@ -131,7 +131,8 @@ function saveAccount() {
         data: {'id_give': id, 'name_give': name, 'pwd_give': pwd},
         success: function (response) {
             alert(response["msg"])
-            window.location.replace('/')
+            window.location.href = "/login"
+            window.location.reload()
         }
     });
 
