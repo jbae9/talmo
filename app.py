@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='password')
 cursor = connection.cursor()
 
 def getDB():
