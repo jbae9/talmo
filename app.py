@@ -7,12 +7,16 @@ import json
 import certifi
 ca = certifi.where()
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
-cursor = connection.cursor()
-
 app = Flask(__name__)
 
 app.secret_key = 'my secret key'
+
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+cursor = connection.cursor()
+
+def getDB():
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
+    return db
 
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
@@ -78,27 +82,25 @@ def removeUser():
 # 피드 불러오기
 @app.route('/feed', methods=["GET"])
 def getFeedDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
+    db = getDB()
     curs = db.cursor()
 
     # feed 테이블에서 feedId, feedDate 불러오기
     # account 테이블이랑 uniqueId로 LEFT JOIN해서 name 불러오기
     # 최신순으로 등록된 데이터을 받음
-    # sql = """
-    # SELECT feedId, feedDate, a.name FROM feed as f
-    # LEFT JOIN account as a
-    # ON f.uniqueId = a.uniqueId
-    # ORDER BY feedDate
-    # """
-
     sql = """
-    SELECT  feedId,
-            DATE_FORMAT(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
-            feedComment 
+    SELECT 	feedId,
+		date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+		feedComment,
+		a.name,
+        f.uniqueId
     FROM talmo.feed as f 
-    ORDER BY feedDate DESC
+    LEFT JOIN talmo.account as a
+    ON f.uniqueId = a.uniqueId
+    ORDER BY feedDate desc
     """
-    
+    uniqueId = session['uniqueId']
+
     curs.execute(sql)
     rows = curs.fetchall()
     rowsJSON = json.loads(json.dumps(rows, ensure_ascii=False, indent=4, sort_keys=True, default=str))
@@ -106,13 +108,12 @@ def getFeedDB():
     db.commit()
     db.close()
 
-    return rowsJSON
-
+    return [uniqueId, rowsJSON]
 
 # 피드 댓글을 DB에 등록하기
 @app.route('/feed/post', methods=["POST"])
 def saveCommentDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
+    db = getDB()
     curs = db.cursor()
 
     feedComment = request.form['comment_give']
@@ -120,7 +121,7 @@ def saveCommentDB():
     uniqueId = session['uniqueId']
 
     # feed 테이블로 등록
-    sql = '''insert into feed (feedComment, feedDate, uniqueId) values(%s,%s,%s)'''
+    sql = '''INSERT INTO feed (feedComment, feedDate, uniqueId) values(%s,%s,%s)'''
     curs.execute(sql, (feedComment, feedDate, uniqueId))
 
     db.commit()
@@ -129,9 +130,9 @@ def saveCommentDB():
 
 
 # 피드 댓글을 DB에 삭제하기
-@app.route('/feed', methods=["delete"])
-def deleteCommentDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
+@app.route("/feed/<int:feedId>", methods=["DELETE"])
+def deleteCommentDB(feedId):
+    db = getDB()
     curs = db.cursor()
 
     feedId = request.form['feedId_give']
@@ -143,6 +144,26 @@ def deleteCommentDB():
     db.commit()
     db.close()
     return jsonify({'msg': '삭제 완료!'})
+
+
+# 수정된 댓글을 DB에 업데이트하기
+@app.route("/feed/<int:feedId>", methods=["PUT"])
+def editCommentDB(feedId):
+    db = getDB()
+    curs = db.cursor()
+
+    comment = request.form['comment_give']
+    date = request.form['date_give']
+
+    # feed 테이블에 feedId에 해당하는 댓글 업데이트
+    sql = '''UPDATE talmo.feed SET feedComment = %s, feedDate = %s WHERE feedID = %s;'''
+    curs.execute(sql, (comment, date, feedId))
+
+    db.commit()
+    db.close()
+    return jsonify({'msg': '수정 완료!'})
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
