@@ -1,9 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import mysql.connector
-
 import pymysql
 import json
-
 import certifi
 
 ca = certifi.where()
@@ -117,6 +115,39 @@ def getFeedDB():
     db.close()
 
     return [uniqueId, rowsJSON]
+
+# 페이지네이션
+
+
+
+@app.route('/feed', methods=["POST","GET"])
+def paginated_feed():
+    db = getDB()
+    curs = db.cursor()
+    print("success")
+    print(request.get_json())
+    commentPerPage = request.get_json().get('offset')
+    print(commentPerPage)
+    page_number = request.get_json().get('commentPerPage')
+    print(page_number)
+
+    ourcomment = int(page_number) * int(commentPerPage)
+    sql = f'select * from talmo.feed limit {commentPerPage} offset {ourcomment}'
+
+    print(sql)
+
+    resultValue = curs.execute(sql)
+    print(resultValue)
+    # # if resultValue > 0:
+    feedDetails = curs.fetchall()
+    curs.close()
+    return jsonify(feedDetails)
+    print(request.form.get('commentPerpage'))
+    return "success"
+
+
+
+
 
 
 # 피드 댓글을 DB에 등록하기

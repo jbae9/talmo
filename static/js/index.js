@@ -3,15 +3,26 @@ $(document).ready(function () {
     getFeed();
 })
 
+ const data = {
+      offset: 2,
+      commentPerPage: 2,
+    };
+
+
 
 // 피드 불러오기
+
+
+
 function getFeed() {
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: '/feed',
-        data: {},
-        success: function (response) {
-            let rows = response[1]
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+      success: function (response) {
+            console.log(response)
+            let rows = response
             const myUniqueId = response[0]
 
             for (let i = 0; i < rows.length; i++) {
@@ -20,13 +31,13 @@ function getFeed() {
                 let comment = rows[i][2]
                 let name = rows[i][3]
                 let uniqueId = rows[i][4]
-                
+
                 // div id가 숫자로만 구성될 수 없으니 feedId# 으로 수정
                 let divFeedId = 'feedId' + feedId
                 let divFeedCommentId = 'feedCommentId' + feedId
 
                 let temp_html = ``
-                
+
                 // 로그인된 유저와 피드 댓글에 등록된 uniqueId가 같으면
                 // 수정/삭제 버튼 보이기
                 if (myUniqueId === uniqueId) {
@@ -58,7 +69,7 @@ function getFeed() {
                                         </div>
                                     </a>`
                 }
-                
+
 
                 $('#feedList').append(temp_html)
             }
@@ -66,58 +77,27 @@ function getFeed() {
     });
 }
 
-// 페이지네이션 //
-//
-// function Pagination() {
-//     $.ajax({
-//         url: '/feed', // url 수정 필요
-//         type: 'POST',
-//         data: {
-//             offset: 0
-//         },
-//         success: function(res) {
-//
-//             var wishObj = JSON.parse(res);
-//             $('#ulist').empty();
-//             $('#ulist').empty();
-//             $('#listTemplate').tmpl(wishObj).appendTo('#ulist');
-//
-//         },
-//         error: function(error) {
-//             console.log(error);
-//         }
-//     });
-// }
 
-
-
-async function getPaginatedUsers(e) {
-    const data= {
-        offset: 5
-        commentPerPage: e.target.innerText
+ async function getPaginatedUsers(e) {
+    const data = {
+      offset: 2,
+      commentPerPage: 2,
     };
 
-    const res = await fetch("/feed"){
-        method: "POST"
-        body: JSON.stringify(data)
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-     });
-  console.log(res.json().then((data) => console.log(data)));
+    const res = await fetch("/feed", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   const handleOnclick = (e) => {
     console.log(e.target.innerText);
   };
 
-  document
-    .getElementById("button_1")
-    .addEventListener("click", (e) => getPaginatedUsers(e));
-  document
-    .getElementById("button_2")
-    .addEventListener("click", (e) => getPaginatedUsers(e));
 
 
 
@@ -127,14 +107,14 @@ function saveComment() {
     let comment = $('#inputComment').val()
     let date = new Date()
     // 로그인된 유저의 uniqueId 받아와야함
-    // let uid = 
-    
+    // let uid =
+
     // MySQL의 DATETIME 포맷으로 수정: 'YYYY-MM-DD hh:mm:ss'
     date = date.getUTCFullYear() + '-' +
         ('00' + (date.getMonth()+1)).slice(-2) + '-' +
-        ('00' + date.getDate()).slice(-2) + ' ' + 
-        ('00' + date.getHours()).slice(-2) + ':' + 
-        ('00' + date.getMinutes()).slice(-2) + ':' + 
+        ('00' + date.getDate()).slice(-2) + ' ' +
+        ('00' + date.getHours()).slice(-2) + ':' +
+        ('00' + date.getMinutes()).slice(-2) + ':' +
         ('00' + date.getSeconds()).slice(-2)
 
     $.ajax({
@@ -198,20 +178,20 @@ function editComment(feedId){
 
     const editTextAreaId = 'editCommment' + feedId
 
-    
+
     let comment = document.getElementById(editTextAreaId).value
     let date = new Date()
-    
+
     // MySQL의 DATETIME 포맷으로 수정: 'YYYY-MM-DD hh:mm:ss'
     date = date.getUTCFullYear() + '-' +
         ('00' + (date.getMonth()+1)).slice(-2) + '-' +
-        ('00' + date.getDate()).slice(-2) + ' ' + 
-        ('00' + date.getHours()).slice(-2) + ':' + 
-        ('00' + date.getMinutes()).slice(-2) + ':' + 
+        ('00' + date.getDate()).slice(-2) + ' ' +
+        ('00' + date.getHours()).slice(-2) + ':' +
+        ('00' + date.getMinutes()).slice(-2) + ':' +
         ('00' + date.getSeconds()).slice(-2)
 
     console.log(date)
-    
+
     $.ajax({
         type: 'PUT',
         url: '/feed/' + feedId,
