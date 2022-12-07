@@ -13,6 +13,7 @@ app = Flask(__name__)
 app.secret_key = 'my secret key'
 
 connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='wjdrl')
+
 cursor = connection.cursor()
 
 
