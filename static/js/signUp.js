@@ -128,7 +128,7 @@ function saveAccount() {
     $.ajax({
         type: "POST",
         url: "/signUp",
-        data: {'id_give': id, 'name_give': name, 'pwd_give': pwd, },
+        data: {'id_give': id, 'name_give': name, 'pwd_give': pwd},
         success: function (response) {
             alert(response["msg"])
             window.location.replace('/')
