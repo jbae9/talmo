@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
 
 cursor = connection.cursor()
 
@@ -58,21 +58,24 @@ def logout():
 @app.route('/index')
 def index():
     if 'loggedin' in session:
-        return render_template('index.html', id=session['id'])
+        return render_template('index.html', id=session['id'],)
     return redirect(url_for('login'))
 
 
-# 홈 눌렀을 때 메인페이지 이동
+# 홈 눌렀을 때 [메인] 페이지 이동
 @app.route('/')
 def home():
     return render_template('index.html')
 
-
-# 홈 눌렀을 때 메인페이지 이동
+# register 눌렀을 때 [회원가입] 페이지 이동
 @app.route('/signUp')
 def signUp():
     return render_template('signUp.html')
 
+# 회원정보 수정 눌렀을 때 [회원정보 수정] 페이지 이동
+@app.route('/editAccount')
+def edit():
+    return render_template('editAccount.html')
 
 # 마이페이지
 @app.route('/mypage')
@@ -83,6 +86,16 @@ def mypage():
         return render_template('myPage.html', account=account)
     return redirect(url_for('login'))
 
+# 회원정보 수정
+@app.route('/editAccount', methods=['GET', 'POST'])
+def editAccount():
+    if 'loggedin' in session:
+        name = request.form['name']
+        cursor.execute('UPDATE account SET name = %s WHERE id = %s', (name, session['id']))
+        connection.commit()
+        
+        return redirect(url_for('mypage'))
+    return redirect(url_for('login'))
 
 # 회원탈퇴
 @app.route('/removeUser')
