@@ -16,7 +16,12 @@ function getFeed() {
 
             renderPagination(rows.length)
 
+            let pageNum = 0
             for (let i = 0; i < rows.length; i++) {
+                if(i%5 === 0) {
+                    pageNum++
+                }
+
                 let feedId = rows[i][0]
                 let date = rows[i][1]
                 let comment = rows[i][2]
@@ -33,7 +38,7 @@ function getFeed() {
                 // 수정/삭제 버튼 보이기
                 if (myUniqueId === uniqueId) {
                     // 받은 정보를 HTML로 전환
-                    temp_html = `  <a href="#" class="list-group-item list-group-item-action" id="${divFeedId}">
+                    temp_html = `  <a href="#" class="list-group-item list-group-item-action page${pageNum}" id="${divFeedId}">
                                             <div class="d-flex w-100 justify-content-between">
                                                 <h5 class="mb-1">${name}</h5>
                                             </div>
@@ -50,7 +55,7 @@ function getFeed() {
                                             <button type="button" class="btn btn-success" style="float:right; margin-right:5px" onclick="showInputEdit('${feedId}')">수정</button>
                                         </a>`
                 } else {
-                    temp_html = `  <a href="#" class="list-group-item list-group-item-action" id="${divFeedId}">
+                    temp_html = `  <a href="#" class="list-group-item list-group-item-action page${pageNum}" id="${divFeedId}">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h5 class="mb-1">${name}</h5>
                                         </div>
@@ -74,26 +79,26 @@ function renderPagination(dataLength){
     let totalPage = Math.ceil(dataLength/5)
 
     // 페이지네이션 HTML 첫 부분
-    let temp_html = ``
-
     let div = document.getElementById('divPagination')
+    let ul = document.createElement('ul')
+    ul.className = 'pagination justify-content-center mt-3'
+    div.appendChild(ul)
+
     for(let i=1; i<=totalPage; i++){
         let a = document.createElement('a')
-        a.class = 'page-link'
+        a.className = 'page-link'
         a.innerHTML = i
+        a.id = 'pagination' + i
 
         let li = document.createElement('li')
-        li.class = 'page-item'
-        li.innerHTML = a
+        li.className = 'page-item'
 
-        div.appendChild(li)
+        ul.appendChild(li).appendChild(a)
     }
 
-    
-    
-    // div.append(temp_html)
-
 }
+
+
 
 
 // 피드 댓글 저장하기
