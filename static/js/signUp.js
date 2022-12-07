@@ -131,9 +131,22 @@ function saveAccount() {
         data: {'id_give': id, 'name_give': name, 'pwd_give': pwd},
         success: function (response) {
             alert(response["msg"])
-            window.location.href = "/login"
-            window.location.reload()
+            window.location.replace('/')
         }
     });
 
+}
+
+
+// 랜덤으로 르탄이 사진 가져오기
+function defaultImg(){
+    $.ajax({
+        type: "GET",
+        url: "http://spartacodingclub.shop/sparta_api/rtan",
+        data: {},
+        success: function (response) {
+            let imgUrl = response['url']
+            return imgUrl
+        }
+    });
 }
