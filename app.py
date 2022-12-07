@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import mysql.connector
+import bcrypt
 
 import pymysql
 import json
@@ -12,13 +13,12 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='wjdrl')
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='bazzi4395')
 
 cursor = connection.cursor()
 
-
 def getDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='wjdrl', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='bazzi4395', charset='utf8')
     return db
 
 
@@ -29,11 +29,14 @@ def login():
     if request.method == 'POST' and 'id' in request.form and 'pw' in request.form:
         id = request.form['id']
         pw = request.form['pw']
-
-        cursor.execute('SELECT * FROM account WHERE id = %s AND pw = %s', (id, pw))
+        cursor.execute('SELECT * FROM account WHERE id = %s', [id])
         account = cursor.fetchone()
+        print(account)
+        pw9 = bcrypt.checkpw(pw.encode('utf-8'), account[2].encode('utf-8'))
+        print(pw9)
+        
 
-        if account:
+        if (account) and (pw9 == True):
             session['loggedin'] = True
             session['uniqueId'] = account[0]
             session['id'] = account[1]
@@ -187,10 +190,12 @@ def Account():
 
     id = request.form['id_give']
     pwd = request.form['pwd_give']
+    pw1 = bcrypt.hashpw(pwd.encode('utf-8'), bcrypt.gensalt())
     name = request.form['name_give']
 
     sql = '''insert into account (id, pw, name) values(%s,%s,%s)'''
-    curs.execute(sql, (id, pwd, name))
+    curs.execute(sql, (id, pw1, name))
+
 
     db.commit()
     db.close()
