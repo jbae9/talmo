@@ -11,7 +11,7 @@ $(function(){
         $("#overlapErr").show();
         errorState("#id");
     }
-});
+    });
 });
 
 $(function(){
@@ -25,6 +25,36 @@ $(function(){
     } else {//정규표현식을 통과하지 못하면
         $("#overErr").show();
         errorState("#name");
+    }
+});
+});
+
+$(function(){
+    $("#phone").keyup(function () {
+    var phone = $(this).val();
+
+    var reg = /^\d{3}-\d{3,4}-\d{4}$/;
+    if (reg.test(phone)) {//정규표현식을 통과 한다면
+        $("#phoneErr").hide();
+        successState("#phone");
+    } else {//정규표현식을 통과하지 못하면
+        $("#phoneErr").show();
+        errorState("#phone");
+    }
+});
+});
+
+$(function(){
+    $("#email").keyup(function () {
+    var email = $(this).val();
+
+    var reg = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+    if (reg.test(email)) {//정규표현식을 통과 한다면
+        $("#emailErr").hide();
+        successState("#email");
+    } else {//정규표현식을 통과하지 못하면
+        $("#emailErr").show();
+        errorState("#email");
     }
 });
 });
@@ -60,10 +90,6 @@ $(function(){
 });
 
 
-
-
-
-
 // 성공 상태로 바꾸는 함수
 function successState(sel) {
     $(sel)
@@ -84,40 +110,55 @@ function saveAccount() {
     let name = $("#name").val()
     let pwd = $("#pwd").val()
     let rePwd = $("#rePwd").val()
+    let phone = $("#phone").val()
+    let email = $("#email").val()
+    let emailReg = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+    let phoneReg = /^\d{3}-\d{3,4}-\d{4}$/;
+    // 빈칸일경우 alert 출력
 
-    if ($("#id").val() == "") {
-        alert("아이디 입력바람");
+    if (id == "") {
+        alert("아이디를 입력해주세요.");
         $("#id").focus();
         return false;
     }
 
-
-    if ($("#name").val() == "") {
-        alert("이름 입력 바람");
+    if (name == "") {
+        alert("이름를 입력해주세요.");
         $("#name").focus();
         return false;
     }
 
-    if ($("#pwd").val() == "") {
-        alert("패스워드 입력바람");
+    if (pwd == "") {
+        alert("패스워드를 입력해주세요.");
         $("#pwd").focus();
         return false;
     }
 
-    if ($("#rePwd").val() == "") {
-        alert("패스워드 확인바람");
+    if (rePwd == "") {
+        alert("패스워드를 확인 입력해주세요.");
         $("#rePwd").focus();
         return false;
     }
 
-    if ($("#id").val() == $("#pwd").val()) {
-        alert("아이디와 비밀번호가 같습니다");
-        $("#pwd").val("");
-        $("#pwd").focus();
+    if (phone == "") {
+        alert("연락처를 입력해주세요.");
+        $("#rePwd").focus();
         return false;
     }
 
-    if ($("#pwd").val() != $("#rePwd").val()) {
+    if (!phoneReg.test(phone)) {
+        alert("연락처를 잘못 입력하셨습니다.");
+        $("#phone").focus();
+        return false;
+    }
+
+    if (!emailReg.test(email)) {
+        alert("이메일을 잘못 입력하셨습니다.");
+        $("#rePwd").focus();
+        return false;
+    }
+
+    if (pwd != rePwd) {
         alert("비밀번호가 상이합니다");
         $("#pwd").val("");
         $("#rePwd").val("");
@@ -128,7 +169,7 @@ function saveAccount() {
     $.ajax({
         type: "POST",
         url: "/signUp",
-        data: {'id_give': id, 'name_give': name, 'pwd_give': pwd},
+        data: {'id_give': id, 'name_give': name, 'pwd_give': pwd, 'phone_give': phone, 'email_give': email},
         success: function (response) {
             alert(response["msg"])
             window.location.href = "/"

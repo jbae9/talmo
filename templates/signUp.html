@@ -33,41 +33,67 @@
             <form id="myForm">
                 <div class="form-group input-group">
                     <!-- form-group// ID-->
-                    <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-user"></i>
-                </span>
-                    </div>
-                    <input id="id" type="text" class="form-control" placeholder="ID" maxlength='10' required>
-                    <div id="overlapErr" class="invalid-feedback help-block">
-                        2글자 이상 입력하세요.
-                    </div>
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-user"></i>
+                    </span>
+                        </div>
+                        <input id="id" type="text" class="form-control" placeholder="ID" maxlength='10' required>
+                        <div id="overlapErr" class="invalid-feedback help-block">
+                            2글자 이상 입력하세요.
+                        </div>
                 </div>
                 <!-- form-group// ID-->
                 <!-- form-group// Name-->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-user"></i>
-                </span>
-                    </div>
-                    <input id="name" type="text" class="form-control" placeholder="Name" maxlength='10' required>
-                    <div id="overErr" class="invalid-feedback help-block">
-                        2글자 이상 입력하세요.
+                    <span class="input-group-text">
+                      <i class="fa fa-user"></i>
+                    </span>
+                        </div>
+                        <input id="name" type="text" class="form-control" placeholder="Name" maxlength='10' required>
+                        <div id="overErr" class="invalid-feedback help-block">
+                            2글자 이상 입력하세요.
                     </div>
                 </div>
                 <!-- form-group// Name-->
+                <!-- form-group// phone-->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-user"></i>
+                    </span>
+                        </div>
+                        <input id="phone" type="text" class="form-control" placeholder="000-0000-0000" required>
+                        <div id="phoneErr" class="invalid-feedback help-block">
+                            휴대폰번호를 제대로 입력 체키라웃.
+                    </div>
+                </div>
+                <!-- form-group// phone-->
+                <!-- form-group// email-->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-user"></i>
+                    </span>
+                        </div>
+                        <input id="email" type="text" class="form-control" placeholder="ex> aaa@naver.com" required>
+                        <div id="emailErr" class="invalid-feedback help-block">
+                            이메일 형식에 맞지 않습니다.
+                    </div>
+                </div>
+                <!-- form-group// email-->
                 <!-- form-group// pwd-->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-lock"></i>
-                </span>
+                        <span class="input-group-text">
+                          <i class="fa fa-lock"></i>
+                        </span>
                     </div>
-                    <input id="pwd" type="password" class="form-control" placeholder="password" maxlength='12' required>
-                    <div id="pwdRegErr" class="invalid-feedback help-block">
-                        8글자 이상 12글자 이하 입력하세요.
-                    </div>
+                        <input id="pwd" type="password" class="form-control" placeholder="password" maxlength='12' required>
+                        <div id="pwdRegErr" class="invalid-feedback help-block">
+                            8글자 이상 12글자 이하 입력하세요.
+                         </div>
                 </div>
                 <!-- form-group// pwd-->
                 <!-- form-group// rePwd-->
@@ -99,7 +125,6 @@
     <!-- card.// -->
 </div>
 <!--container end.//-->
-
 
 
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"

@@ -188,9 +188,12 @@ def Account():
     id = request.form['id_give']
     pwd = request.form['pwd_give']
     name = request.form['name_give']
+    phone = request.form['phone_give']
+    email = request.form['email_give']
 
-    sql = '''insert into account (id, pw, name) values(%s,%s,%s)'''
-    curs.execute(sql, (id, pwd, name))
+
+    sql = '''insert into account (id, pw, name, phone, email) values(%s,%s,%s,%s,%s)'''
+    curs.execute(sql, (id, pwd, name, phone, email))
 
     db.commit()
     db.close()
