@@ -3,7 +3,6 @@ import mysql.connector
 import bcrypt
 import re
 import pymysql
-import json
 
 from urllib.request import urlopen
 import base64
@@ -16,12 +15,12 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='password')
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
 
 cursor = connection.cursor()
 
 def getDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
     return db
 
 
