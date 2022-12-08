@@ -23,7 +23,7 @@
   <meta property="og:image" content="" />
 </head>
 
-<body class="text-center">
+<body class="text-center d-flex justify-content-center align-items-center">
   <main class="form-signin w-100 m-auto">
       <!-- 로고이미지 -->
       <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-camera2 mx-2"
@@ -48,42 +48,13 @@
         <div class="msg my-2" style="color: red"> {{msg}} </div>
 
         <button class="w-100 btn btn-lg btn-primary" type="submit">
-          Sign in
+          로그인
         </button>
-        <button class="w-100 btn btn-lg btn-danger my-2" type="submit">
-          Register
+        <button class="w-100 btn btn-lg btn-danger my-2" type="submit" onclick="location.href = '/signUp'">
+          회원가입
         </button>
       </form>
   </main>
 </body>
 
 </html>
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Login</title>
-
-		
-	</head>
-	<body>
-		<div class="login">
-			<h1>Login</h1>
-			<div class="links">
-			</div>
-			<form method="post">
-
-				
-				<input type="text" name="username" placeholder="Username"  required>
-				<input type="text" name="password" placeholder="Password"  required>
-				<div class="msg"></div>
-				<input type="submit" >
-			</form>
-		</div>
-	</body>
-</html> -->
