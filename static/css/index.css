@@ -1,66 +1,76 @@
+:root {
+  /*color*/
+  --main--color: #FAEC52;
+  --sub--color: #000000;
+  --footer--color: #ffffff;
+}
+
+
 /* 상단바 배경 */
 .bdHeader .navbar {
-  background-color: yellow;
+  background-color: var(--main--color);
 }
 
 /* 상단 카메라 아이콘 */
 svg {
-  color: black;
+  color: var(--sub--color);
 }
 
 /* 생존스타그램 텍스트 */
 .bdHeader .navbar .navbar-brand {
-  color: black;
-}
-
-/* 상단바 글씨 */
-.collapse .navbar-nav .nav-link {
-  color: black;
-}
-
-/* 상단바 글씨 마우스 올려두었을 때 */
-.collapse .navbar-nav .nav-link:hover {
-  color: green;
-}
-
-/* 상단바 글씨 중 현재 페이지 텍스트 */
-.collapse .navbar-nav .nav-link.active {
-  color: darkred;
+  color: var(--sub--color);
 }
 
 /* 왼쪽 사이드바 상자*/
-.nav .nav-item .nav-link.active {
-  background-color: orange;
-  color: white;
+#sideMenu > a {
+  background-color: #fff;
+  color: var(--sub--color);
+}
+
+/* 왼쪽 사이드바 상자*/
+#sideMenu > a.active {
+  background-color: var(--main--color);
+  color: var(--sub--color);
 }
 
 /* Feature 카드*/
 .card .card-header {
-  background-color: brown;
+  background-color:var(--main--color);
 }
 
 /* 등록하기 버튼 */
 .mt-3 .btn {
-  background-color: green;
-  color: white;
+  background-color: var(--main--color);
+  color: var(--sub--color);
 }
 
 /* 페이지바 */
 .pagination .page-link {
-  color: brown;
+  color: var(--sub--color);
 }
 
 /* 하단바 색상 */
 footer {
-  background-color: red;
+  background-color: var(--footer--color);
 }
 
 /* © 2022 Copyright */
 footer .text-center {
-  color: blue;
+  color: var(--sub--color);
 }
 /* talmoTalmoBim.com */
 footer .text-center .textdark{
-  color: black;
-  text-decoration: none;
+  color: var(--sub--color);
+  text-decoration: var(--sub--color);
+}
+
+.bdSideber {
+  background-image: url("/static/img/egg5.png");
+  background-size: 280px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+body {
+  margin-top: 100px;
 }
