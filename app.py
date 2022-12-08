@@ -61,7 +61,9 @@ def logout():
 @app.route('/index')
 def index():
     if 'loggedin' in session:
-        return render_template('index.html', id=session['id'],)
+        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        return render_template('index.html', account=account)
     return redirect(url_for('login'))
 
 
@@ -96,9 +98,12 @@ def mypage():
 # 회원정보 수정
 @app.route('/editAccount', methods=['GET', 'POST'])
 def editAccount():
-    if request.method == 'POST' and 'name' in request.form:
+    if request.method == 'POST' and 'name' in request.form and 'phone' in request.form and 'email' in request.form:
         name = request.form['name']
-        cursor.execute('UPDATE account SET name = %s WHERE id = %s', (name, session['id']))
+        phone = request.form['phone']
+        email = request.form['email']
+
+        cursor.execute('UPDATE account SET name = %s, phone = %s, email = %s WHERE id = %s', (name, phone, email, session['id']))
         connection.commit()
         
         return redirect(url_for('mypage'))
@@ -213,7 +218,7 @@ def Account():
     email = request.form['email_give']
 
     sql = '''insert into account (id, pw, name, phone, email) values(%s,%s,%s,%s,%s)'''
-    curs.execute(sql, (id, pwd, name, phone, email))
+    curs.execute(sql, (id, pw1, name, phone, email))
 
     db.commit()
     db.close()
