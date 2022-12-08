@@ -166,14 +166,31 @@ function saveAccount() {
         return false;
     }
 
+    let imgUrl = rtanImg()
+
     $.ajax({
         type: "POST",
         url: "/signUp",
-        data: {'id_give': id, 'name_give': name, 'pwd_give': pwd, 'phone_give': phone, 'email_give': email},
+        data: {'id_give': id, 'name_give': name, 'pwd_give': pwd, 'phone_give': phone, 'email_give': email, 'imgUrl_give': imgUrl},
         success: function (response) {
             alert(response["msg"])
             window.location.replace('/')
         }
     });
 
+}
+
+// 르탄이 이미지 가져오기
+function rtanImg() {
+    let imgUrl
+    $.ajax({
+        type: "GET",
+        url: "http://spartacodingclub.shop/sparta_api/rtan",
+        data: {},
+        async: false,
+        success: function (response) {
+            imgUrl = response['url']
+        }
+    });
+    return imgUrl
 }

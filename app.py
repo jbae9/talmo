@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import mysql.connector
 import bcrypt
-
+import re
 import pymysql
 import json
+
+from urllib.request import urlopen
+import base64
 
 import certifi
 
@@ -17,6 +20,7 @@ connection = mysql.connector.connect(host='localhost', user='root', db='talmo', 
 
 cursor = connection.cursor()
 
+
 def getDB():
     db = pymysql.connect(host='localhost', user='root', db='talmo', password='wjdrl', charset='utf8')
     return db
@@ -25,16 +29,16 @@ def getDB():
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
 def login():
+    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='wjdrl')
+    cursor = connection.cursor()
+
     msg = ''
     if request.method == 'POST' and 'id' in request.form and 'pw' in request.form:
         id = request.form['id']
         pw = request.form['pw']
         cursor.execute('SELECT * FROM account WHERE id = %s', [id])
         account = cursor.fetchone()
-        print(account)
         pw9 = bcrypt.checkpw(pw.encode('utf-8'), account[2].encode('utf-8'))
-        print(pw9)
-        
 
         if (account) and (pw9 == True):
             session['loggedin'] = True
@@ -72,10 +76,12 @@ def index():
 def home():
     return render_template('index.html')
 
+
 # register 눌렀을 때 [회원가입] 페이지 이동
 @app.route('/signUp')
 def signUp():
     return render_template('signUp.html')
+
 
 # 회원정보 수정 눌렀을 때 [회원정보 수정] 페이지 이동
 @app.route('/editAccount')
@@ -86,6 +92,7 @@ def edit():
         return render_template('editAccount.html', account=account)
     return redirect(url_for('login'))
 
+
 # 마이페이지
 @app.route('/mypage')
 def mypage():
@@ -95,6 +102,7 @@ def mypage():
         return render_template('myPage.html', account=account)
     return redirect(url_for('login'))
 
+
 # 회원정보 수정
 @app.route('/editAccount', methods=['GET', 'POST'])
 def editAccount():
@@ -103,11 +111,23 @@ def editAccount():
         phone = request.form['phone']
         email = request.form['email']
 
-        cursor.execute('UPDATE account SET name = %s, phone = %s, email = %s WHERE id = %s', (name, phone, email, session['id']))
+        if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = '⚠ 이메일 형식이 잘못되었습니다.'
+        elif not re.match(r'^010|011|070-\d{3,4}-\d{4}$', phone):
+            msg = '⚠ 휴대폰 번호 형식이 잘못되었습니다.'
+
+        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+
+        return render_template('editAccount.html', msg=msg, account=account)
+
+    else:
+        cursor.execute('UPDATE account SET name = %s, phone = %s, email = %s WHERE id = %s',
+                       (name, phone, email, session['id']))
         connection.commit()
-        
-        return redirect(url_for('mypage'))
-    return redirect(url_for('login'))
+
+    return redirect(url_for('mypage'))
+
 
 # 회원탈퇴
 @app.route('/removeUser')
@@ -120,35 +140,102 @@ def removeUser():
 
 
 # 피드 불러오기
-@app.route('/feed', methods=["GET"])
-def getFeedDB():
+@app.route('/feed/<int:page_id>', methods=["GET"])
+def getFeedDB(page_id):
     db = getDB()
     curs = db.cursor()
-
+    if page_id == 1:
+        sql = '''SELECT feedId,
+                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    feedComment,
+                    a.name,
+                    f.uniqueId,
+                    a.img
+                FROM talmo.feed as f
+                LEFT JOIN talmo.account as a
+                ON f.uniqueId = a.uniqueId
+                ORDER BY feedDate desc
+                LIMIT 5 OFFSET 0'''
+    if page_id == 2:
+        sql = '''SELECT feedId,
+                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    feedComment,
+                    a.name,
+                    f.uniqueId,
+                    a.img
+                FROM talmo.feed as f
+                LEFT JOIN talmo.account as a
+                ON f.uniqueId = a.uniqueId
+                ORDER BY feedDate desc
+                LIMIT 5 OFFSET 5'''
+    if page_id == 3:
+        sql = '''SELECT feedId,
+                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    feedComment,
+                    a.name,
+                    f.uniqueId,
+                    a.img
+                FROM talmo.feed as f
+                LEFT JOIN talmo.account as a
+                ON f.uniqueId = a.uniqueId
+                ORDER BY feedDate desc
+                LIMIT 5 OFFSET 10'''
     # feed 테이블에서 feedId, feedDate 불러오기
     # account 테이블이랑 uniqueId로 LEFT JOIN해서 name 불러오기
     # 최신순으로 등록된 데이터을 받음
-    sql = """
-    SELECT feedId,
-		date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
-		feedComment,
-		a.name,
-        f.uniqueId
-    FROM talmo.feed as f 
-    LEFT JOIN talmo.account as a
-    ON f.uniqueId = a.uniqueId
-    ORDER BY feedDate desc
-    """
+    # sql = """
+    # SELECT 	feedId,
+    # 	date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+    # 	feedComment,
+    # 	a.name,
+    #     f.uniqueId
+    # FROM talmo.feed as f
+    # LEFT JOIN talmo.account as a
+    # ON f.uniqueId = a.uniqueId
+    # ORDER BY feedDate desc
+    # """
     uniqueId = session['uniqueId']
-
     curs.execute(sql)
     rows = curs.fetchall()
-    rowsJSON = json.loads(json.dumps(rows, ensure_ascii=False, indent=4, sort_keys=True, default=str))
+
+    newRows = [0] * len(rows)
+    for i in range(len(rows)):
+        newRows[i] = [0] * 6
+        newRows[i][0] = rows[i][0]
+        newRows[i][1] = rows[i][1]
+        newRows[i][2] = rows[i][2]
+        newRows[i][3] = rows[i][3]
+        newRows[i][4] = rows[i][4]
+        if rows[i][5] != None:
+            b64 = base64.b64encode(rows[i][5]).decode('utf-8')
+            newRows[i][5] = b64
+        else:
+            newRows[i][5] = rows[i][5]
+
+    db.commit()
+    db.close()
+    return [uniqueId, newRows]
+
+
+# 프로필 사진 마이페이지에 불러오기
+@app.route('/myImg', methods=["GET"])
+def getProfileImg():
+    db = getDB()
+    curs = db.cursor()
+
+    sql = """SELECT img FROM talmo.account WHERE uniqueId = %s"""
+
+    uniqueId = session['uniqueId']
+    curs.execute(sql, (uniqueId))
+    row = curs.fetchone()
+
+    binary = row[0]
+    b64 = base64.b64encode(binary).decode('utf-8')
 
     db.commit()
     db.close()
 
-    return [uniqueId, rowsJSON]
+    return b64
 
 
 # 피드 댓글을 DB에 등록하기
@@ -204,6 +291,7 @@ def editCommentDB(feedId):
     db.close()
     return jsonify({'msg': '수정 완료!'})
 
+
 # 회원가입
 @app.route("/signUp", methods=["POST"])
 def Account():
@@ -217,12 +305,16 @@ def Account():
     phone = request.form['phone_give']
     email = request.form['email_give']
 
-    sql = '''insert into account (id, pw, name, phone, email) values(%s,%s,%s,%s,%s)'''
-    curs.execute(sql, (id, pw1, name, phone, email))
+    imgUrl = request.form['imgUrl_give']
+    imgBinary = urlopen(imgUrl).read()
+
+    sql = '''insert into account (id, pw, name, phone, email, img) values(%s,%s,%s,%s,%s,%s)'''
+    curs.execute(sql, (id, pw1, name, phone, email, imgBinary))
 
     db.commit()
     db.close()
     return jsonify({'msg': '기록 완료!'})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

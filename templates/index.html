@@ -2,25 +2,25 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/css/normalize.css" />
-  <link rel="stylesheet" href="../static/css/index.css" />
-  <script src="../static/js/index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/normalize.css"/>
+    <link rel="stylesheet" href="../static/css/index.css"/>
+    <script src="../static/js/index.js"></script>
 
-  <title>SNS</title>
+    <title>SNS</title>
 
-  <meta property="og:title" content="" />
-  <meta property="og:description" content="" />
-  <meta property="og:image" content="" />
+    <meta property="og:title" content=""/>
+    <meta property="og:description" content=""/>
+    <meta property="og:image" content=""/>
 
 </head>
 
@@ -43,13 +43,13 @@
             <!-- 로고 -->
         </div>
         <!-- 네비게이션 -->
-      </div>
+        </div>
     </nav>
-  </header>
-  <!-- 해더역역 -->
+</header>
+<!-- 해더역역 -->
 
-  <!-- 콘텐츠영역 -->
-  <div class="container-fluid">
+<!-- 콘텐츠영역 -->
+<div class="container-fluid">
     <div class="row">
         <!-- 사이드메뉴 -->
         <aside class="col-md-12 col-lg-2 bdSideber">
@@ -74,7 +74,7 @@
                                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
                         />
                     </svg>
-                    <span class="fs-4">{{ name }}</span>
+                    <span class="fs-4">{{ account[3] }}</span>
                 </a>
                 <hr/>
                 <ul id="sideMenu" class="nav nav-pills flex-column mb-auto">
@@ -82,6 +82,7 @@
                     <a class="nav-link" href="/mypage">MyPage</a>
                     <a class="nav-link" href="/logout">Logout</a>
                 </ul>
+
             </div>
         </aside>
         <!-- 사이드 메뉴 -->
@@ -92,7 +93,7 @@
             <div class="card">
                 <div class="card-header">Featured</div>
                 <div class="card-body">
-                    <h5 class="card-title">닉네임</h5>
+                    <h5 class="card-title">{{ account[3] }}</h5>
                     <div class="form-floating">
               <textarea class="form-control" placeholder="Leave a comment here" id="inputComment"
                         style="height: 100px"></textarea>
@@ -111,10 +112,12 @@
                 <!-- 페이지네이션 -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center mt-3">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Previous</a>
+                        </li>
+                        <li class="page-item"><a id="page-1" class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a id="page-2" class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a id="page-3" class="page-link" href="#">3</a></li>
                         <li class="page-item"><a class="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>
@@ -131,30 +134,25 @@
                     <!-- 날씨 API -->
                     <h2 class="text-center">현재 날씨</h2>
                     <div id="divWeather"></div>
-
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              Some quick example text to build on the card title and make up
-              the bulk of the card's content.
-            </p>
-          </div>
-        </div>
-      </section>
-      <!-- 사이드콘텐츠 -->
+                </div>
+            </div>
+        </section>
+        <!-- 사이드콘텐츠 -->
     </div>
-  </div>
-  <!-- 콘텐츠영역 -->
+</div>
+<!-- 콘텐츠영역 -->
 
 <!-- 푸터영역 -->
 <footer class="text-center text-lg-start mt-3">
     <!-- Copyright -->
     <div class="text-center p-3">
         © 2022 Copyright:
-        <a class="textdark" href="https://www.google.com/search?q=%EB%AF%BC%EB%A8%B8%EB%A6%AC&rlz=1C5CHFA_enKR970KR970&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi3_ODvn-n7AhWGbN4KHT8oBYsQ_AUoAXoECAIQAw&biw=1080&bih=707">talmoTalmoBim.com</a>
+        <a class="textdark"
+           href="https://www.google.com/search?q=%EB%AF%BC%EB%A8%B8%EB%A6%AC&rlz=1C5CHFA_enKR970KR970&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi3_ODvn-n7AhWGbN4KHT8oBYsQ_AUoAXoECAIQAw&biw=1080&bih=707">talmoTalmoBim.com</a>
     </div>
     <!-- Copyright -->
-  </footer>
-  <!-- 푸터영역 -->
+</footer>
+<!-- 푸터영역 -->
 </body>
 
 </html>
