@@ -174,7 +174,7 @@ function saveAccount() {
         data: {'id_give': id, 'name_give': name, 'pwd_give': pwd, 'phone_give': phone, 'email_give': email, 'imgUrl_give': imgUrl},
         success: function (response) {
             alert(response["msg"])
-            window.location.href="login"
+            window.location.replace('/')
         }
     });
 
