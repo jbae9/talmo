@@ -86,13 +86,8 @@
                     <span class="fs-4">{{ account[3] }}</span>
                 </a>
                 <hr/>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark"> Dashboard </a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark"> Orders </a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark"> Products </a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark"> Customers </a></li>
-                </ul>
+
+
             </div>
         </aside>
         <!-- 사이드 메뉴 -->
@@ -120,15 +115,17 @@
                 </div>
                 <!-- 불러온 게시글 -->
                 <!-- 페이지네이션 -->
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mt-3">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
+         <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center mt-3">
+              <li class="page-item">
+                <a class="page-link" href="#">Previous</a>
+              </li>
+              <li class="page-item"><a id="page-1" class="page-link" href="#">1</a></li>
+              <li class="page-item"><a id="page-2" class="page-link" href="#">2</a></li>
+              <li class="page-item"><a id="page-3" class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
                 <!-- 페이지네이션 -->
         </main>
         <!-- 메인영역 -->
