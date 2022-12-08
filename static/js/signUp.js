@@ -172,7 +172,7 @@ function saveAccount() {
         data: {'id_give': id, 'name_give': name, 'pwd_give': pwd, 'phone_give': phone, 'email_give': email},
         success: function (response) {
             alert(response["msg"])
-            window.location.replace('/')
+            window.location.href="login"
         }
     });
 

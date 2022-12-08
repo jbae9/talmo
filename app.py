@@ -25,16 +25,16 @@ def getDB():
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
 def login():
+    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+    cursor = connection.cursor()
+
     msg = ''
     if request.method == 'POST' and 'id' in request.form and 'pw' in request.form:
         id = request.form['id']
         pw = request.form['pw']
         cursor.execute('SELECT * FROM account WHERE id = %s', [id])
         account = cursor.fetchone()
-        print(account)
         pw9 = bcrypt.checkpw(pw.encode('utf-8'), account[2].encode('utf-8'))
-        print(pw9)
-        
 
         if (account) and (pw9 == True):
             session['loggedin'] = True
