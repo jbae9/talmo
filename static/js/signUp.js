@@ -176,8 +176,7 @@ function saveAccount() {
             alert(response["msg"])
             window.location.replace('/')
         }
-    });
-
+    })
 }
 
 // 르탄이 이미지 가져오기
