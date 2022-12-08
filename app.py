@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import mysql.connector
 import bcrypt
-
+import re
 import pymysql
 import json
 
@@ -98,16 +98,27 @@ def mypage():
 # 회원정보 수정
 @app.route('/editAccount', methods=['GET', 'POST'])
 def editAccount():
+
     if request.method == 'POST' and 'name' in request.form and 'phone' in request.form and 'email' in request.form:
         name = request.form['name']
         phone = request.form['phone']
         email = request.form['email']
 
+        if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = '⚠ 이메일 형식이 잘못되었습니다.'
+        elif not re.match(r'^010|011|070-\d{3,4}-\d{4}$', phone):
+            msg = '⚠ 휴대폰 번호 형식이 잘못되었습니다.'
+            
+        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        
+        return render_template('editAccount.html', msg=msg, account=account)
+    
+    else:
         cursor.execute('UPDATE account SET name = %s, phone = %s, email = %s WHERE id = %s', (name, phone, email, session['id']))
         connection.commit()
-        
-        return redirect(url_for('mypage'))
-    return redirect(url_for('login'))
+            
+    return redirect(url_for('mypage'))
 
 # 회원탈퇴
 @app.route('/removeUser')
