@@ -222,10 +222,13 @@ def getProfileImg():
     curs.execute(sql, (uniqueId))
     row = curs.fetchone()
 
-    print(row)
+    binary = row[0]
+    b64 = base64.b64encode(binary).decode('utf-8')
 
     db.commit()
     db.close()
+
+    return b64
 
 
 
