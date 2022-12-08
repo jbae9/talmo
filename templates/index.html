@@ -83,7 +83,7 @@
                                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
                         />
                     </svg>
-                    <span class="fs-4">{{ name }}</span>
+                    <span class="fs-4">{{ account[3] }}</span>
                 </a>
                 <hr/>
                 <ul class="nav nav-pills flex-column mb-auto">
@@ -103,7 +103,7 @@
             <div class="card">
                 <div class="card-header">Featured</div>
                 <div class="card-body">
-                    <h5 class="card-title">닉네임</h5>
+                    <h5 class="card-title">{{ account[3] }}</h5>
                     <div class="form-floating">
               <textarea class="form-control" placeholder="Leave a comment here" id="inputComment"
                         style="height: 100px"></textarea>
