@@ -28,7 +28,7 @@ def getDB():
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='tochouz77')
     cursor = connection.cursor()
 
     msg = ''

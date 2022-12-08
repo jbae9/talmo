@@ -3,46 +3,49 @@ $(document).ready(function () {
     // index.html이 로딩 되었으면 피드 불러오기
     getFeed(1);
 })
+
+
 //  페이지 시작, 새로고침 시 작동 --------------------
 $(document).ready(() => {
-    // let pagenumber = localStorage.getItem('pagenumber')
-    // if (!pagenumber) {
-    //     getFeed(1)
-    // } else {
-    //     getFeed(parseInt(pagenumber))
-    // }
-    // document.getElementById('page-1').addEventListener('click', () => {
-    //     console.log('yes')
-    //     localStorage.setItem('pagenumber', 1)
-    //     getFeed(1)
-    // })
-    //
-    //
-    // document.getElementById('page-2').addEventListener('click', () => {
-    //     console.log('yes')
-    //     localStorage.setItem('pagenumber', 2)
-    //     getFeed(2)
-    // })
-    //
-    // document.getElementById('page-3').addEventListener('click', () => {
-    //     console.log('yes')
-    //     localStorage.setItem('pagenumber', 3)
-    //     getFeed(3)
-    // })
-    $('#page-1').on('click', () => {
-        console.log('1click')
+    let pagenumber = localStorage.getItem('pagenumber')
+    if (!pagenumber) {
+        getFeed(1)
+    } else {
+        getFeed(parseInt(pagenumber))
+    }
+    document.getElementById('page-1').addEventListener('click', () => {
+        console.log('yes')
         localStorage.setItem('pagenumber', 1)
         getFeed(1)
     })
-    $('#page-2').on('click', () => {
-        console.log('2click')
+
+
+    document.getElementById('page-2').addEventListener('click', () => {
+        console.log('yes')
         localStorage.setItem('pagenumber', 2)
         getFeed(2)
     })
-    $('#page-3').on('click', () => {
+
+    document.getElementById('page-3').addEventListener('click', () => {
+        console.log('yes')
         localStorage.setItem('pagenumber', 3)
         getFeed(3)
     })
+    // $('#page-1').on('click', () => {
+    //     console.log('1click')
+    //     localStorage.setItem('pagenumber', 1)
+    //     getFeed(1)
+    // })
+    // $('#page-2').on('click', () => {
+    //     console.log('2click')
+    //     localStorage.setItem('pagenumber', 2)
+    //     getFeed(2)
+    // })
+    // $('#page-3').on('click', () => {
+    //
+    //     localStorage.setItem('pagenumber', 3)
+    //     getFeed(3)
+    // })
 })
 // ---------------------------------------------
 // 피드 불러오기
