@@ -80,29 +80,33 @@
         <!-- 프로필 이미지 -->
 
         <!-- 프로필 정보 -->
-        <div class="col-sm-12 col-md-8">
+        <form class="col-sm-12 col-md-8" action="{{ url_for('editAccount') }}" method="POST">
           <div class="card">
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-3">
                   <h6 class="mb-0">ID</h6>
                 </div>
-                <div class="col-sm-6 text-secondary">{{ account[1] }}</div>
-
+                <div class="col-sm-6 text-secondary">{{ account[1] }}
+                </div>
               </div>
               <hr />
               <div class="row">
                 <div class="col-sm-3">
                   <h6 class="mb-0">이름</h6>
                 </div>
-                <div class="col-sm-6 text-secondary">{{ account[3] }}</div>
+                <div class="col-sm-6 text-secondary">
+                  <input class="form-control" style="width:50%" type="text" name="name" value= {{account[3]}}  required>
+                </div>
               </div>
               <hr />
               <div class="row">
                 <div class="col-sm-3">
                   <h6 class="mb-0">Phone</h6>
                 </div>
-                <div class="col-sm-6 text-secondary">{{ account[4] }}</div>
+                <div class="col-sm-6 text-secondary">
+                  <input class="form-control" style="width:50%" type="text" name="phone">
+                </div>
               </div>
               <hr />
               <div class="row">
@@ -110,21 +114,22 @@
                   <h6 class="mb-0">Address</h6>
                 </div>
                 <div class="col-sm-6 text-secondary">
-                  {{ account[5] }}
+                  <input class="form-control" style="width:50%" type="text" name="phone">
                 </div>
               </div>
               <hr />
               <div class="row">
                 <div class="col-sm-12">
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button onclick="location.href='/editAccount'" type="button" class="btn btn-sm btn-outline-primary" type="submit">회원정보 수정</button>
-                    <button onclick="location.href='/removeUser'" class="btn btn-sm btn-outline-danger" type="submit">회원탈퇴</button>
+                    <button class="btn btn-sm btn-outline-primary" type="submit">
+                      회원정보 수정
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </form>
         <!-- 프로필 정보 -->
 
       </div>

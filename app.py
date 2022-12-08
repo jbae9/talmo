@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import mysql.connector
+import bcrypt
 
 import pymysql
 import json
@@ -12,13 +13,12 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='wjdrl')
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
 
 cursor = connection.cursor()
 
-
 def getDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='wjdrl', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
     return db
 
 
@@ -29,11 +29,14 @@ def login():
     if request.method == 'POST' and 'id' in request.form and 'pw' in request.form:
         id = request.form['id']
         pw = request.form['pw']
-
-        cursor.execute('SELECT * FROM account WHERE id = %s AND pw = %s', (id, pw))
+        cursor.execute('SELECT * FROM account WHERE id = %s', [id])
         account = cursor.fetchone()
+        print(account)
+        pw9 = bcrypt.checkpw(pw.encode('utf-8'), account[2].encode('utf-8'))
+        print(pw9)
+        
 
-        if account:
+        if (account) and (pw9 == True):
             session['loggedin'] = True
             session['uniqueId'] = account[0]
             session['id'] = account[1]
@@ -58,21 +61,28 @@ def logout():
 @app.route('/index')
 def index():
     if 'loggedin' in session:
-        return render_template('index.html', id=session['id'])
+        return render_template('index.html', id=session['id'],)
     return redirect(url_for('login'))
 
 
-# 홈 눌렀을 때 메인페이지 이동
+# 홈 눌렀을 때 [메인] 페이지 이동
 @app.route('/')
 def home():
     return render_template('index.html')
 
-
-# 홈 눌렀을 때 메인페이지 이동
+# register 눌렀을 때 [회원가입] 페이지 이동
 @app.route('/signUp')
 def signUp():
     return render_template('signUp.html')
 
+# 회원정보 수정 눌렀을 때 [회원정보 수정] 페이지 이동
+@app.route('/editAccount')
+def edit():
+    if 'loggedin' in session:
+        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        return render_template('editAccount.html', account=account)
+    return redirect(url_for('login'))
 
 # 마이페이지
 @app.route('/mypage')
@@ -83,6 +93,16 @@ def mypage():
         return render_template('myPage.html', account=account)
     return redirect(url_for('login'))
 
+# 회원정보 수정
+@app.route('/editAccount', methods=['GET', 'POST'])
+def editAccount():
+    if request.method == 'POST' and 'name' in request.form:
+        name = request.form['name']
+        cursor.execute('UPDATE account SET name = %s WHERE id = %s', (name, session['id']))
+        connection.commit()
+        
+        return redirect(url_for('mypage'))
+    return redirect(url_for('login'))
 
 # 회원탈퇴
 @app.route('/removeUser')
@@ -187,10 +207,10 @@ def Account():
 
     id = request.form['id_give']
     pwd = request.form['pwd_give']
+    pw1 = bcrypt.hashpw(pwd.encode('utf-8'), bcrypt.gensalt())
     name = request.form['name_give']
     phone = request.form['phone_give']
     email = request.form['email_give']
-
 
     sql = '''insert into account (id, pw, name, phone, email) values(%s,%s,%s,%s,%s)'''
     curs.execute(sql, (id, pwd, name, phone, email))
