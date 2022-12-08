@@ -5,6 +5,9 @@ import bcrypt
 import pymysql
 import json
 
+from urllib.request import urlopen
+import base64
+
 import certifi
 
 ca = certifi.where()
@@ -13,12 +16,12 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='password')
 
 cursor = connection.cursor()
 
 def getDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
     return db
 
 
@@ -133,7 +136,8 @@ def getFeedDB():
 		date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
 		feedComment,
 		a.name,
-        f.uniqueId
+        f.uniqueId,
+        a.img
     FROM talmo.feed as f 
     LEFT JOIN talmo.account as a
     ON f.uniqueId = a.uniqueId
@@ -143,12 +147,28 @@ def getFeedDB():
 
     curs.execute(sql)
     rows = curs.fetchall()
-    rowsJSON = json.loads(json.dumps(rows, ensure_ascii=False, indent=4, sort_keys=True, default=str))
+
+    newRows = [0] * len(rows)
+
+    for i in range(len(rows)):
+        newRows[i] = [0] * 6
+        newRows[i][0] = rows[i][0]
+        newRows[i][1] = rows[i][1]
+        newRows[i][2] = rows[i][2]
+        newRows[i][3] = rows[i][3]
+        newRows[i][4] = rows[i][4]
+        if rows[i][5] != None:
+            print(type(rows[i][5]))
+            b64 = base64.b64encode(rows[i][5]).decode('utf-8')
+            print(type(b64))
+            newRows[i][5] = b64
+        else:
+            newRows[i][5] = rows[i][5]
 
     db.commit()
     db.close()
 
-    return [uniqueId, rowsJSON]
+    return [uniqueId, newRows]
 
 
 # 피드 댓글을 DB에 등록하기
@@ -217,8 +237,11 @@ def Account():
     phone = request.form['phone_give']
     email = request.form['email_give']
 
-    sql = '''insert into account (id, pw, name, phone, email) values(%s,%s,%s,%s,%s)'''
-    curs.execute(sql, (id, pw1, name, phone, email))
+    imgUrl = request.form['imgUrl_give']
+    imgBinary = urlopen(imgUrl).read()
+
+    sql = '''insert into account (id, pw, name, phone, email, img) values(%s,%s,%s,%s,%s,%s)'''
+    curs.execute(sql, (id, pw1, name, phone, email, imgBinary))
 
     db.commit()
     db.close()
