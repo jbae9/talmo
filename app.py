@@ -16,19 +16,19 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='tochouz77')
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='password')
 
 cursor = connection.cursor()
 
 def getDB():
-    db = pymysql.connect(host='localhost', user='root', db='talmo', password='tochouz77', charset='utf8')
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='password', charset='utf8')
     return db
 
 
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='tochouz77')
+    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='password')
     cursor = connection.cursor()
 
     msg = ''
@@ -138,14 +138,38 @@ def getFeedDB(page_id):
     db = getDB()
     curs = db.cursor()
     if page_id == 1:
-        sql = '''SELECT * FROM talmo.feed
-                LIMIT 5 OFFSET 0;'''
+        sql = '''SELECT feedId,
+                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    feedComment,
+                    a.name,
+                    f.uniqueId
+                FROM talmo.feed as f
+                LEFT JOIN talmo.account as a
+                ON f.uniqueId = a.uniqueId
+                ORDER BY feedDate desc
+                LIMIT 5 OFFSET 0'''
     if page_id == 2:
-        sql = '''SELECT * FROM talmo.feed
-                LIMIT 5 OFFSET 5;'''
+        sql = '''SELECT feedId,
+                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    feedComment,
+                    a.name,
+                    f.uniqueId
+                FROM talmo.feed as f
+                LEFT JOIN talmo.account as a
+                ON f.uniqueId = a.uniqueId
+                ORDER BY feedDate desc
+                LIMIT 5 OFFSET 5'''
     if page_id == 3:
-        sql = '''SELECT * FROM talmo.feed
-                LIMIT 5 OFFSET 10;'''
+        sql = '''SELECT feedId,
+                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    feedComment,
+                    a.name,
+                    f.uniqueId
+                FROM talmo.feed as f
+                LEFT JOIN talmo.account as a
+                ON f.uniqueId = a.uniqueId
+                ORDER BY feedDate desc
+                LIMIT 5 OFFSET 10'''
     # feed 테이블에서 feedId, feedDate 불러오기
     # account 테이블이랑 uniqueId로 LEFT JOIN해서 name 불러오기
     # 최신순으로 등록된 데이터을 받음

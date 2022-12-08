@@ -59,6 +59,9 @@ function getFeed(parameter) {
             console.log(response)
             let rows = response
             const myUniqueId = response[0]
+
+            $('#feedList').empty()
+
             for (let i = 0; i < rows.length; i++) {
                 console.log(rows[i])
                 let feedId = rows[i][0]
