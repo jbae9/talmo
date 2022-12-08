@@ -20,6 +20,7 @@ function getFeed() {
                 let comment = rows[i][2]
                 let name = rows[i][3]
                 let uniqueId = rows[i][4]
+                let imgSrc = rows[i][5]
 
                 // div id가 숫자로만 구성될 수 없으니 feedId# 으로 수정
                 let divFeedId = 'feedId' + feedId
@@ -36,7 +37,7 @@ function getFeed() {
                         <a href="#" class="list-group-item">
                             <div class="w-100">
                                 <div><img height="50" style='float: left'
-                                          src="http://spartacodingclub.shop/static/images/rtans/SpartaIcon04.png"></div>
+                                          src="data:image/png;base64,${imgSrc}"></div>
                                 <h5 class="mb-1">${name}</h5>
                                 <small class="text-muted">${date}</small>
                             </div>
@@ -64,7 +65,7 @@ function getFeed() {
                         <a href="#" class="list-group-item">
                             <div class="w-100">
                                 <div><img height="50" style='float: left'
-                                          src="http://spartacodingclub.shop/static/images/rtans/SpartaIcon04.png"></div>
+                                          src="data:image/png;base64,${imgSrc}"></div>
                                 <h5 class="mb-1">${name}</h5>
                                 <small class="text-muted">${date}</small>
                             </div>
