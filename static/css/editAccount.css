@@ -1,0 +1,82 @@
+/* 상단바 배경 */
+.bdHeader .navbar {
+  background-color: yellow;
+}
+
+/* 상단 카메라 아이콘 */
+svg {
+  color: black;
+}
+
+/* 생존스타그램 텍스트 */
+.bdHeader .navbar .navbar-brand {
+  color: black;
+}
+
+/* 상단바 글씨 */
+.collapse .navbar-nav .nav-link {
+  color: black;
+}
+
+/* 상단바 글씨 마우스 올려두었을 때 */
+.collapse .navbar-nav .nav-link:hover {
+  color: green;
+}
+
+/* 상단바 글씨 중 현재 페이지 텍스트 */
+.collapse .navbar-nav .nav-link.active {
+  color: darkred;
+}
+
+/* 사진변경 버튼 */
+.col-sm-12 .card .card-body .d-flex .mt-3 .update {
+  color: orange;
+  background-color: white ;
+  border-color: orange;
+}
+/* 사진변경 버튼 마우스 올려둘 때 */
+.col-sm-12 .card .card-body .d-flex .mt-3 .update:hover {
+  background-color: red;
+  color: white;
+}
+
+/* 사진변경 삭제 버튼 */
+.col-sm-12 .card .card-body .d-flex .mt-3 .delete {
+  color: orange;
+  background-color: white ;
+  border-color: orange;
+}
+/* 사진변경 삭제 버튼 마우스 올려둘 때 */
+.col-sm-12 .card .card-body .d-flex .mt-3 .delete:hover {
+  background-color: red;
+  color: white;
+}
+
+/* 회원정보 수정 버튼 */
+.row .col-sm-12 .d-grid .btn{
+  color: orange;
+  background-color: white ;
+  border-color: orange;
+}
+
+/* 회원정보 수정 버튼 마우스 올려둘 때 */
+.row .col-sm-12 .d-grid .btn:hover{
+  background-color: red;
+  color: white;
+}
+
+
+/* 하단바 색상 */
+footer {
+  background-color: red;
+}
+
+/* © 2022 Copyright */
+footer .text-center {
+  color: blue;
+}
+/* talmoTalmoBim.com */
+footer .text-center .textdark{
+  color: black;
+  text-decoration: none;
+}
