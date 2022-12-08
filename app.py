@@ -142,7 +142,8 @@ def getFeedDB(page_id):
                     date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
                     feedComment,
                     a.name,
-                    f.uniqueId
+                    f.uniqueId,
+                    a.img
                 FROM talmo.feed as f
                 LEFT JOIN talmo.account as a
                 ON f.uniqueId = a.uniqueId
@@ -153,7 +154,8 @@ def getFeedDB(page_id):
                     date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
                     feedComment,
                     a.name,
-                    f.uniqueId
+                    f.uniqueId,
+                    a.img
                 FROM talmo.feed as f
                 LEFT JOIN talmo.account as a
                 ON f.uniqueId = a.uniqueId
@@ -164,7 +166,8 @@ def getFeedDB(page_id):
                     date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
                     feedComment,
                     a.name,
-                    f.uniqueId
+                    f.uniqueId,
+                    a.img
                 FROM talmo.feed as f
                 LEFT JOIN talmo.account as a
                 ON f.uniqueId = a.uniqueId
@@ -187,9 +190,25 @@ def getFeedDB(page_id):
     uniqueId = session['uniqueId']
     curs.execute(sql)
     rows = curs.fetchall()
-    db.commit()
-    db.close()
-    return jsonify(rows)
+
+    newRows = [0] * len(rows)	
+    for i in range(len(rows)):	
+        newRows[i] = [0] * 6	
+        newRows[i][0] = rows[i][0]	
+        newRows[i][1] = rows[i][1]	
+        newRows[i][2] = rows[i][2]	
+        newRows[i][3] = rows[i][3]	
+        newRows[i][4] = rows[i][4]	
+        if rows[i][5] != None:	
+            b64 = base64.b64encode(rows[i][5]).decode('utf-8')	
+            newRows[i][5] = b64	
+        else:	
+            newRows[i][5] = rows[i][5]
+
+
+    db.commit()	
+    db.close()	
+    return [uniqueId, newRows]
 
 # 프로필 사진 마이페이지에 불러오기
 @app.route('/myImg', methods=["GET"])

@@ -56,19 +56,19 @@ function getFeed(parameter) {
         url: `/feed/${parameter}`,
         data: {},
         success: function (response) {
-            console.log(response)
-            let rows = response
+            let rows = response[1]
             const myUniqueId = response[0]
 
             $('#feedList').empty()
-
+            console.log(response)
             for (let i = 0; i < rows.length; i++) {
-                console.log(rows[i])
                 let feedId = rows[i][0]
                 let date = rows[i][1]
                 let comment = rows[i][2]
                 let name = rows[i][3]
                 let uniqueId = rows[i][4]
+                let imgSrc = rows[i][5]
+
                 // div id가 숫자로만 구성될 수 없으니 feedId# 으로 수정
                 let divFeedId = 'feedId' + feedId
                 let divFeedCommentId = 'feedCommentId' + feedId
@@ -81,7 +81,7 @@ function getFeed(parameter) {
                         <a href="#" class="list-group-item">
                             <div class="w-100">
                                 <div><img height="50" style='float: left'
-                                          src="http://spartacodingclub.shop/static/images/rtans/SpartaIcon04.png"></div>
+                                          src="data:image/png;base64,${imgSrc}"></div>
                                 <h5 class="mb-1">${name}</h5>
                                 <small class="text-muted">${date}</small>
                             </div>
@@ -109,7 +109,7 @@ function getFeed(parameter) {
                         <a href="#" class="list-group-item">
                             <div class="w-100">
                                 <div><img height="50" style='float: left'
-                                          src="http://spartacodingclub.shop/static/images/rtans/SpartaIcon04.png"></div>
+                                          src="data:image/png;base64,${imgSrc}"></div>
                                 <h5 class="mb-1">${name}</h5>
                                 <small class="text-muted">${date}</small>
                             </div>
