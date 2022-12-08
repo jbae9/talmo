@@ -9,7 +9,8 @@ function getMyImg(){
         url: '/myImg',
         data: {},
         success: function (response) {
-            
+            let img = document.getElementById('myPageImg')
+            img.src = 'data:image/png;base64,' + response
         }
     })
 }
