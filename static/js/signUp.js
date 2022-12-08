@@ -131,7 +131,12 @@ function saveAccount() {
         data: {'id_give': id, 'name_give': name, 'pwd_give': pwd},
         success: function (response) {
             alert(response["msg"])
+<<<<<<< HEAD
             window.location.replace('/')
+=======
+            window.location.href = "/"
+            window.location.reload()
+>>>>>>> 6b439d7090c195542b48d4513c34512a4019d352
         }
     });
 
