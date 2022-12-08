@@ -13,6 +13,7 @@
     crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../static/css/normalize.css" />
+  <link rel="stylesheet" href="../static/css/editAccount.css" />
   <script src="../static/js/index.js"></script>
 
   <title>마이페이지</title>
@@ -26,7 +27,7 @@
 <body class="pt-4 pb-5">
   <!-- 해더영역 -->
   <header class="bdHeader fixed-top">
-    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-sm navbar-dark">
       <div class="container-fluid">
         <!-- 로고 -->
         <a class="navbar-brand" href="/index">
@@ -69,9 +70,8 @@
                   alt="Admin" class="rounded-circle" width="150" height="150" />
                 <div class="mt-3">
                   <h4>{{ account[3] }}</h4>
-                  <button class="btn btn-primary">사진변경</button>
-                  <button class="btn btn-outline-danger">삭제</button>
-
+                  <button class="update btn btn-primary">사진변경</button>
+                  <button class="delete btn btn-outline-danger">삭제</button>
                 </div>
               </div>
             </div>
@@ -87,7 +87,7 @@
                 <div class="col-sm-3">
                   <h6 class="mb-0">ID</h6>
                 </div>
-                <div class="col-sm-6 text-secondary">{{ account[1] }}
+                <div class="col-sm-6 text-secondary">
                 </div>
               </div>
               <hr />
@@ -102,25 +102,26 @@
               <hr />
               <div class="row">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Phone</h6>
+                  <h6 class="mb-0">휴대폰 번호</h6>
                 </div>
                 <div class="col-sm-6 text-secondary">
-                  <input class="form-control" style="width:50%" type="text" name="phone">
+                  <input class="form-control" style="width:50%" type="text" name="phone" value= {{account[4]}} required>
                 </div>
               </div>
               <hr />
               <div class="row">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Address</h6>
+                  <h6 class="mb-0">이메일</h6>
                 </div>
                 <div class="col-sm-6 text-secondary">
-                  <input class="form-control" style="width:50%" type="text" name="phone">
+                  <input class="form-control" style="width:50%" type="text" name="email" value= {{account[5]}} required>
                 </div>
               </div>
               <hr />
               <div class="row">
                 <div class="col-sm-12">
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <div class="msg my-2 d-md-flex justify-content-md-end" style="color: red"> {{msg}} </div>
                     <button class="btn btn-sm btn-outline-primary" type="submit">
                       회원정보 수정
                     </button>
@@ -138,11 +139,11 @@
   <!-- 콘텐츠영역 -->
 
   <!-- 푸터영역 -->
-  <footer class="bg-light text-center text-lg-start fixed-bottom ">
+  <footer class=" text-center text-lg-start fixed-bottom ">
     <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-      © 2020 Copyright:
-      <a class="text-dark" href="https://mdbootstrap.com/">talmoTalmoBim.com</a>
+    <div class="text-center p-3">
+      © 2022 Copyright:
+      <a class="textdark" href="https://www.google.com/search?q=%EB%AF%BC%EB%A8%B8%EB%A6%AC&rlz=1C5CHFA_enKR970KR970&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi3_ODvn-n7AhWGbN4KHT8oBYsQ_AUoAXoECAIQAw&biw=1080&bih=707">talmoTalmoBim.com</a>
     </div>
     <!-- Copyright -->
   </footer>

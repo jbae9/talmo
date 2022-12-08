@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import mysql.connector
 import bcrypt
-
+import re
 import pymysql
 import json
 
@@ -25,16 +25,16 @@ def getDB():
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
 def login():
+    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+    cursor = connection.cursor()
+
     msg = ''
     if request.method == 'POST' and 'id' in request.form and 'pw' in request.form:
         id = request.form['id']
         pw = request.form['pw']
         cursor.execute('SELECT * FROM account WHERE id = %s', [id])
         account = cursor.fetchone()
-        print(account)
         pw9 = bcrypt.checkpw(pw.encode('utf-8'), account[2].encode('utf-8'))
-        print(pw9)
-        
 
         if (account) and (pw9 == True):
             session['loggedin'] = True
@@ -61,7 +61,9 @@ def logout():
 @app.route('/index')
 def index():
     if 'loggedin' in session:
-        return render_template('index.html', id=session['id'],)
+        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        return render_template('index.html', account=account)
     return redirect(url_for('login'))
 
 
@@ -96,13 +98,27 @@ def mypage():
 # 회원정보 수정
 @app.route('/editAccount', methods=['GET', 'POST'])
 def editAccount():
-    if request.method == 'POST' and 'name' in request.form:
+
+    if request.method == 'POST' and 'name' in request.form and 'phone' in request.form and 'email' in request.form:
         name = request.form['name']
-        cursor.execute('UPDATE account SET name = %s WHERE id = %s', (name, session['id']))
-        connection.commit()
+        phone = request.form['phone']
+        email = request.form['email']
+
+        if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = '⚠ 이메일 형식이 잘못되었습니다.'
+        elif not re.match(r'^010|011|070-\d{3,4}-\d{4}$', phone):
+            msg = '⚠ 휴대폰 번호 형식이 잘못되었습니다.'
+            
+        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
         
-        return redirect(url_for('mypage'))
-    return redirect(url_for('login'))
+        return render_template('editAccount.html', msg=msg, account=account)
+    
+    else:
+        cursor.execute('UPDATE account SET name = %s, phone = %s, email = %s WHERE id = %s', (name, phone, email, session['id']))
+        connection.commit()
+            
+    return redirect(url_for('mypage'))
 
 # 회원탈퇴
 @app.route('/removeUser')
@@ -213,7 +229,7 @@ def Account():
     email = request.form['email_give']
 
     sql = '''insert into account (id, pw, name, phone, email) values(%s,%s,%s,%s,%s)'''
-    curs.execute(sql, (id, pwd, name, phone, email))
+    curs.execute(sql, (id, pw1, name, phone, email))
 
     db.commit()
     db.close()
