@@ -1,108 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link
-            href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-            rel="stylesheet"
-            id="bootstrap-css"
-    />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
 
-    <link
-            rel="stylesheet"
-            href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"
-    />
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="../static/css/normalize.css"/>
-    <link rel="stylesheet" href="../static/css/signUp.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/css/normalize.css" />
+    <link rel="stylesheet" href="../static/css/signUp.css" />
     <script src="../static/js/signUp.js"></script>
     <title>회원가입</title>
 
 </head>
+
 <body>
-<div class="container bd-singUp">
-    <div class="card bg-light mx-auto">
-        <article class="card-body mx-auto">
-            <h4 class="card-title mt-3 text-center">회원가입</h4>
-            <p class="text-center">생존신고 계정을 만들어요!</p>
+    <div class="container bd-singUp">
+        <div class="card bg-light mx-auto">
+            <article class="card-body mx-auto">
+                <h4 class="card-title mt-3 text-center">회원가입</h4>
+                <p class="text-center">생존신고 계정을 만들어요!</p>
 
-            <form id="myForm">
-                <div class="form-group input-group">
+                <form id="myForm">
+                    <div class="form-group input-group">
+                        <!-- form-group// ID-->
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-user"></i>
+                            </span>
+                        </div>
+                        <input id="id" type="text" class="form-control" placeholder="ID" maxlength='10' required>
+                        <div id="overlapErr" class="invalid-feedback help-block">
+                            2글자 이상 입력하세요.
+                        </div>
+                    </div>
                     <!-- form-group// ID-->
-                    <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-user"></i>
-                </span>
+                    <!-- form-group// Name-->
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-user"></i>
+                            </span>
+                        </div>
+                        <input id="name" type="text" class="form-control" placeholder="Name" maxlength='10' required>
+                        <div id="overErr" class="invalid-feedback help-block">
+                            2글자 이상 입력하세요.
+                        </div>
                     </div>
-                    <input id="id" type="text" class="form-control" placeholder="ID" maxlength='10' required>
-                    <div id="overlapErr" class="invalid-feedback help-block">
-                        2글자 이상 입력하세요.
+                    <!-- form-group// Name-->
+                    <!-- form-group// phone-->
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-user"></i>
+                            </span>
+                        </div>
+                        <input id="phone" type="text" class="form-control" placeholder="000-0000-0000" required>
+                        <div id="phoneErr" class="invalid-feedback help-block">
+                            휴대폰 번호 형식에 맞지 않습니다.
+                        </div>
                     </div>
-                </div>
-                <!-- form-group// ID-->
-                <!-- form-group// Name-->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-user"></i>
-                </span>
+                    <!-- form-group// phone-->
+                    <!-- form-group// email-->
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-user"></i>
+                            </span>
+                        </div>
+                        <input id="email" type="text" class="form-control" placeholder="ex> aaa@naver.com" required>
+                        <div id="emailErr" class="invalid-feedback help-block">
+                            이메일 형식에 맞지 않습니다.
+                        </div>
                     </div>
-                    <input id="name" type="text" class="form-control" placeholder="Name" maxlength='10' required>
-                    <div id="overErr" class="invalid-feedback help-block">
-                        2글자 이상 입력하세요.
+                    <!-- form-group// email-->
+                    <!-- form-group// pwd-->
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-lock"></i>
+                            </span>
+                        </div>
+                        <input id="pwd" type="password" class="form-control" placeholder="password" maxlength='12'
+                            required>
+                        <div id="pwdRegErr" class="invalid-feedback help-block">
+                            8글자 이상 12글자 이하 입력하세요.
+                        </div>
                     </div>
-                </div>
-                <!-- form-group// Name-->
-                <!-- form-group// pwd-->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-lock"></i>
-                </span>
+                    <!-- form-group// pwd-->
+                    <!-- form-group// rePwd-->
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-lock"></i>
+                            </span>
+                        </div>
+                        <input id="rePwd" type="password" class="form-control" placeholder="repassword" maxlength='12'
+                            required>
+                        <div id="rePwdgErr" class="invalid-feedback help-block">
+                            비밀번호와 일치하지 않습니다. 다시 입력해 주세요.
+                        </div>
                     </div>
-                    <input id="pwd" type="password" class="form-control" placeholder="password" maxlength='12' required>
-                    <div id="pwdRegErr" class="invalid-feedback help-block">
-                        8글자 이상 12글자 이하 입력하세요.
+                    <!-- form-group// rePwd-->
+                    <div class="form-group">
+                        <!-- submit-button// -->
+                        <button type="button" class="btn btn-primary btn-block" onclick="saveAccount()">
+                            Create Account
+                        </button>
+                        <!-- submit-button// -->
                     </div>
-                </div>
-                <!-- form-group// pwd-->
-                <!-- form-group// rePwd-->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-lock"></i>
-                </span>
-                    </div>
-                    <input id="rePwd" type="password" class="form-control" placeholder="repassword" maxlength='12'
-                           required>
-                    <div id="rePwdgErr" class="invalid-feedback help-block">
-                        비밀번호와 일치하지 않습니다. 다시 입력해 주세요.
-                    </div>
-                </div>
-                <!-- form-group// rePwd-->
-                <div class="form-group">
-                    <!-- submit-button// -->
-                    <button type="button" class="btn btn-primary btn-block" onclick="saveAccount()">
-                        Create Account
-                    </button>
-                    <!-- submit-button// -->
-                </div>
 
-                <p class="text-center">Have an account? <a href="/">Log In</a></p>
-            </form>
-        </article>
+                    <p class="text-center">Have an account? <a href="/">Log In</a></p>
+                </form>
+            </article>
+        </div>
+        <!-- card.// -->
     </div>
-    <!-- card.// -->
-</div>
-<!--container end.//-->
+    <!--container end.//-->
 
 
-
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 </body>
+
 </html>
