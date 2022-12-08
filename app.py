@@ -158,9 +158,7 @@ def getFeedDB():
         newRows[i][3] = rows[i][3]
         newRows[i][4] = rows[i][4]
         if rows[i][5] != None:
-            print(type(rows[i][5]))
             b64 = base64.b64encode(rows[i][5]).decode('utf-8')
-            print(type(b64))
             newRows[i][5] = b64
         else:
             newRows[i][5] = rows[i][5]
