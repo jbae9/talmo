@@ -41,15 +41,6 @@
                 생존스타그램
             </a>
             <!-- 로고 -->
-            <!-- 네비게이션 -->
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="/index">Home</a>
-                    <a class="nav-link" href="/mypage">MyPage</a>
-                    <a class="nav-link" href="/logout">Logout</a>
-                </div>
-            </div>
-            <!-- 네비게이션 -->
         </div>
         <!-- 네비게이션 -->
       </div>
@@ -58,7 +49,7 @@
   <!-- 해더역역 -->
 
   <!-- 콘텐츠영역 -->
-  <div class="container-fluid mt-5">
+  <div class="container-fluid">
     <div class="row">
         <!-- 사이드메뉴 -->
         <aside class="col-md-12 col-lg-2 bdSideber">
@@ -86,12 +77,10 @@
                     <span class="fs-4">{{ name }}</span>
                 </a>
                 <hr/>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark"> Dashboard </a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark"> Orders </a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark"> Products </a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark"> Customers </a></li>
+                <ul id="sideMenu" class="nav nav-pills flex-column mb-auto">
+                    <a class="nav-link active" aria-current="page" href="/index">Home</a>
+                    <a class="nav-link" href="/mypage">MyPage</a>
+                    <a class="nav-link" href="/logout">Logout</a>
                 </ul>
             </div>
         </aside>
@@ -136,7 +125,7 @@
         <!-- 사이드콘텐츠 -->
         <section class="col-md-12 col-lg-2 bdSection">
             <div class="card">
-                <img src="https://velog.velcdn.com/images/codic/post/60bb7814-cf9f-47a4-aa72-01e723261965/image.gif"
+                <img src="/static/img/egg1.png"
                      class="card-img-top" alt="..."/>
                 <div class="card-body">
                     <!-- 날씨 API -->
@@ -148,7 +137,6 @@
               Some quick example text to build on the card title and make up
               the bulk of the card's content.
             </p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
           </div>
         </div>
       </section>
@@ -158,7 +146,7 @@
   <!-- 콘텐츠영역 -->
 
 <!-- 푸터영역 -->
-<footer class="text-center text-lg-start fixed-bottom ">
+<footer class="text-center text-lg-start mt-3">
     <!-- Copyright -->
     <div class="text-center p-3">
         © 2022 Copyright:

@@ -43,8 +43,8 @@ function getFeed() {
                             <p class="mb-1" id="${divFeedCommentId}">${comment}</p>
                             <div id='divEdit${feedId}' style='display: none'>
                                 <textarea class='form-control' id='editCommment${feedId}' style='height: 80px' placeholder='수정할 내용을 입력해주세요'></textarea>
-                                <button class='btn btn-primary' style='margin-top:5px' onclick='editComment(${feedId})'>확인</button>
-                                <button class='btn btn-danger' style='margin-top:5px' onclick="cancelEdit('${feedId}')">취소</button>
+                                <button class='btn btn-outline-warning' style='margin-top:5px' onclick='editComment(${feedId})'>확인</button>
+                                <button class='btn btn-outline-danger' style='margin-top:5px' onclick="cancelEdit('${feedId}')">취소</button>
                             </div>
                         </a>
                         <div class="dropdown position-absolute top-0 end-0">

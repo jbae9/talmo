@@ -34,3 +34,21 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+#loginBtn01:hover {
+  background-color: #f5d83c;
+  color: white;
+}
+
+#loginBtn01 {
+  background-color: #ffea87;
+}
+
+#loginBtn02:hover {
+  background-color: #000;
+  color: white;
+}
+
+#loginBtn02 {
+  background-color: #7c7c7c;
+}
