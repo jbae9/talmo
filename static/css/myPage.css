@@ -1,35 +1,42 @@
+:root {
+  /*color*/
+  --main--color: #FAEC52;
+  --sub--color: #000000;
+  --footer--color: #ffffff;
+}
+
 /* 상단바 배경 */
 .bdHeader .navbar {
-  background-color: yellow;
+  background-color: var(--main--color);
 }
 
 /* 상단 카메라 아이콘 */
 svg {
-  color: black;
+  color: var(--sub--color);
 }
 
 /* 생존스타그램 텍스트 */
 .bdHeader .navbar .navbar-brand {
-  color: black;
+  color: var(--sub--color);
 }
 
 /* 상단바 글씨 */
 .collapse .navbar-nav .nav-link {
-  color: black;
+  color: var(--sub--color);
 }
 
 /* 상단바 글씨 마우스 올려두었을 때 */
 .collapse .navbar-nav .nav-link:hover {
-  color: green;
+  color: var(--footer--color);
 }
 
 /* 상단바 글씨 중 현재 페이지 텍스트 */
 .collapse .navbar-nav .nav-link.active {
-  color: darkred;
+  color: var(--footer--color);
 }
 
 /* 사진변경 버튼 */
-.col-sm-12 .card .card-body .d-flex .mt-3 .update {
+#update-btn {
   color: orange;
   background-color: white ;
   border-color: orange;
@@ -58,17 +65,12 @@ svg {
   background-color: white ;
   border-color: orange;
 }
-/* 회원정보 수정 버튼 마우스 올려둘 때 */
-.row .col-sm-12 .d-grid .update:hover {
-  background-color: red;
-  color: white;
-}
+
 
 /* 회원탈퇴 버튼 */
 .row .col-sm-12 .d-grid .delete {
-  color: orange;
-  background-color: white ;
-  border-color: orange;
+  color: white;
+  background-color: red ;
 }
 /* 회원탈퇴 버튼 마우스 올려둘 때 */
 .row .col-sm-12 .d-grid .delete:hover {
@@ -78,15 +80,30 @@ svg {
 
 /* 하단바 색상 */
 footer {
-  background-color: red;
+  background-color: var(--footer--color) ;
 }
 
 /* © 2022 Copyright */
 footer .text-center {
-  color: blue;
+  color: var(--sub--color) ;
 }
 /* talmoTalmoBim.com */
 footer .text-center .textdark{
   color: black;
   text-decoration: none;
+}
+
+/*myPagePlace 계란 위에 높이*/
+.myPagePlace{
+  width: 100%;
+  height: 50px;
+}
+/*myPageImg 계란이미지*/
+.myPageImg {
+  width: 100%;
+  height: 100px;
+  background-image: url("/static/img/egg3.png");
+  background-position: top;
+  background-size: contain;
+  background-repeat: no-repeat;
 }

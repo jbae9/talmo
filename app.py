@@ -16,19 +16,32 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
+<<<<<<< HEAD
 connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+=======
+connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='wjdrl')
+>>>>>>> master
 
 cursor = connection.cursor()
 
+
 def getDB():
+<<<<<<< HEAD
     db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
+=======
+    db = pymysql.connect(host='localhost', user='root', db='talmo', password='wjdrl', charset='utf8')
+>>>>>>> master
     return db
 
 
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
 def login():
+<<<<<<< HEAD
     connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+=======
+    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='wjdrl')
+>>>>>>> master
     cursor = connection.cursor()
 
     msg = ''
@@ -75,10 +88,12 @@ def index():
 def home():
     return render_template('index.html')
 
+
 # register 눌렀을 때 [회원가입] 페이지 이동
 @app.route('/signUp')
 def signUp():
     return render_template('signUp.html')
+
 
 # 회원정보 수정 눌렀을 때 [회원정보 수정] 페이지 이동
 @app.route('/editAccount')
@@ -89,6 +104,7 @@ def edit():
         return render_template('editAccount.html', account=account)
     return redirect(url_for('login'))
 
+
 # 마이페이지
 @app.route('/mypage')
 def mypage():
@@ -97,6 +113,7 @@ def mypage():
         account = cursor.fetchone()
         return render_template('myPage.html', account=account)
     return redirect(url_for('login'))
+
 
 # 회원정보 수정
 @app.route('/editAccount', methods=['GET', 'POST'])
@@ -107,6 +124,7 @@ def editAccount():
         email = request.form['email']
 
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+<<<<<<< HEAD
             msg = ':경고: 이메일 형식이 잘못되었습니다.'
             account = cursor.fetchone()
             return render_template('editAccount.html', msg=msg, account=account)
@@ -121,6 +139,24 @@ def editAccount():
             cursor.execute('UPDATE account SET name = %s, phone = %s, email = %s WHERE id = %s', (name, phone, email, session['id'],))
             connection.commit()
             return redirect(url_for('mypage'))
+=======
+            msg = '⚠ 이메일 형식이 잘못되었습니다.'
+        elif not re.match(r'^010|011|070-\d{3,4}-\d{4}$', phone):
+            msg = '⚠ 휴대폰 번호 형식이 잘못되었습니다.'
+
+        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+
+        return render_template('editAccount.html', msg=msg, account=account)
+
+    else:
+        cursor.execute('UPDATE account SET name = %s, phone = %s, email = %s WHERE id = %s',
+                       (name, phone, email, session['id']))
+        connection.commit()
+
+    return redirect(url_for('mypage'))
+>>>>>>> master
+
 
 # 회원탈퇴
 @app.route('/removeUser')
@@ -130,6 +166,7 @@ def removeUser():
         connection.commit()
         connection.close()
     return redirect(url_for('login'))
+
 
 # 피드 불러오기
 @app.route('/feed/<int:page_id>', methods=["GET"])
@@ -177,9 +214,9 @@ def getFeedDB(page_id):
     # 최신순으로 등록된 데이터을 받음
     # sql = """
     # SELECT 	feedId,
-	# 	date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
-	# 	feedComment,
-	# 	a.name,
+    # 	date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+    # 	feedComment,
+    # 	a.name,
     #     f.uniqueId
     # FROM talmo.feed as f
     # LEFT JOIN talmo.account as a
@@ -190,24 +227,24 @@ def getFeedDB(page_id):
     curs.execute(sql)
     rows = curs.fetchall()
 
-    newRows = [0] * len(rows)	
-    for i in range(len(rows)):	
-        newRows[i] = [0] * 6	
-        newRows[i][0] = rows[i][0]	
-        newRows[i][1] = rows[i][1]	
-        newRows[i][2] = rows[i][2]	
-        newRows[i][3] = rows[i][3]	
-        newRows[i][4] = rows[i][4]	
-        if rows[i][5] != None:	
-            b64 = base64.b64encode(rows[i][5]).decode('utf-8')	
-            newRows[i][5] = b64	
-        else:	
+    newRows = [0] * len(rows)
+    for i in range(len(rows)):
+        newRows[i] = [0] * 6
+        newRows[i][0] = rows[i][0]
+        newRows[i][1] = rows[i][1]
+        newRows[i][2] = rows[i][2]
+        newRows[i][3] = rows[i][3]
+        newRows[i][4] = rows[i][4]
+        if rows[i][5] != None:
+            b64 = base64.b64encode(rows[i][5]).decode('utf-8')
+            newRows[i][5] = b64
+        else:
             newRows[i][5] = rows[i][5]
 
-
-    db.commit()	
-    db.close()	
+    db.commit()
+    db.close()
     return [uniqueId, newRows]
+
 
 # 프로필 사진 마이페이지에 불러오기
 @app.route('/myImg', methods=["GET"])
@@ -228,8 +265,6 @@ def getProfileImg():
     db.close()
 
     return b64
-
-
 
 
 # 피드 댓글을 DB에 등록하기
@@ -285,6 +320,7 @@ def editCommentDB(feedId):
     db.close()
     return jsonify({'msg': '수정 완료!'})
 
+
 # 회원가입
 @app.route("/signUp", methods=["POST"])
 def Account():
@@ -307,6 +343,7 @@ def Account():
     db.commit()
     db.close()
     return jsonify({'msg': '기록 완료!'})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
