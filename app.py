@@ -28,7 +28,7 @@ def getDB():
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='password')
     cursor = connection.cursor()
 
     msg = ''
@@ -178,6 +178,25 @@ def getFeedDB():
     db.close()
 
     return [uniqueId, newRows]
+
+# 프로필 사진 마이페이지에 불러오기
+@app.route('/myImg', methods=["GET"])
+def getProfileImg():
+    db = getDB()
+    curs = db.cursor()
+
+    sql = """SELECT img FROM talmo.account WHERE uniqueId = %s"""
+
+    uniqueId = session['uniqueId']
+    curs.execute(sql, (uniqueId))
+    row = curs.fetchone()
+
+    print(row)
+
+    db.commit()
+    db.close()
+
+
 
 
 # 피드 댓글을 DB에 등록하기

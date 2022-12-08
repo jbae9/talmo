@@ -86,7 +86,6 @@ function saveComment() {
     let comment = $('#inputComment').val()
     let date = new Date()
     // 로그인된 유저의 uniqueId 받아와야함
-    // let uid = 
 
     // MySQL의 DATETIME 포맷으로 수정: 'YYYY-MM-DD hh:mm:ss'
     date = date.getUTCFullYear() + '-' +
