@@ -75,7 +75,11 @@ def signUp():
 # 회원정보 수정 눌렀을 때 [회원정보 수정] 페이지 이동
 @app.route('/editAccount')
 def edit():
-    return render_template('editAccount.html')
+    if 'loggedin' in session:
+        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        return render_template('editAccount.html', account=account)
+    return redirect(url_for('login'))
 
 # 마이페이지
 @app.route('/mypage')
@@ -89,7 +93,7 @@ def mypage():
 # 회원정보 수정
 @app.route('/editAccount', methods=['GET', 'POST'])
 def editAccount():
-    if 'loggedin' in session:
+    if request.method == 'POST' and 'name' in request.form:
         name = request.form['name']
         cursor.execute('UPDATE account SET name = %s WHERE id = %s', (name, session['id']))
         connection.commit()

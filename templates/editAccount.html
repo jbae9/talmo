@@ -68,7 +68,7 @@
                   src="https://velog.velcdn.com/images/leehk77789/post/eecb1d96-8a17-4dc2-bada-878775819252/image.jpg"
                   alt="Admin" class="rounded-circle" width="150" height="150" />
                 <div class="mt-3">
-                  <h4></h4>
+                  <h4>{{ account[3] }}</h4>
                   <button class="btn btn-primary">사진변경</button>
                   <button class="btn btn-outline-danger">삭제</button>
 
@@ -87,7 +87,7 @@
                 <div class="col-sm-3">
                   <h6 class="mb-0">ID</h6>
                 </div>
-                <div class="col-sm-6 text-secondary">
+                <div class="col-sm-6 text-secondary">{{ account[1] }}
                 </div>
               </div>
               <hr />
@@ -96,7 +96,7 @@
                   <h6 class="mb-0">이름</h6>
                 </div>
                 <div class="col-sm-6 text-secondary">
-                  <input class="form-control" style="width:50%" type="text" name="name" required>
+                  <input class="form-control" style="width:50%" type="text" name="name" value= {{account[3]}}  required>
                 </div>
               </div>
               <hr />
