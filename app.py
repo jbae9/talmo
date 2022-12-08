@@ -27,7 +27,7 @@ def getDB():
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
+    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='password')
     cursor = connection.cursor()
 
     msg = ''
@@ -131,52 +131,105 @@ def removeUser():
         connection.close()
     return redirect(url_for('login'))
 
-
 # 피드 불러오기
-@app.route('/feed', methods=["GET"])
-def getFeedDB():
+@app.route('/feed/<int:page_id>', methods=["GET"])
+def getFeedDB(page_id):
     db = getDB()
     curs = db.cursor()
-
+    if page_id == 1:
+        sql = '''SELECT feedId,
+                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    feedComment,
+                    a.name,
+                    f.uniqueId,
+                    a.img
+                FROM talmo.feed as f
+                LEFT JOIN talmo.account as a
+                ON f.uniqueId = a.uniqueId
+                ORDER BY feedDate desc
+                LIMIT 5 OFFSET 0'''
+    if page_id == 2:
+        sql = '''SELECT feedId,
+                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    feedComment,
+                    a.name,
+                    f.uniqueId,
+                    a.img
+                FROM talmo.feed as f
+                LEFT JOIN talmo.account as a
+                ON f.uniqueId = a.uniqueId
+                ORDER BY feedDate desc
+                LIMIT 5 OFFSET 5'''
+    if page_id == 3:
+        sql = '''SELECT feedId,
+                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    feedComment,
+                    a.name,
+                    f.uniqueId,
+                    a.img
+                FROM talmo.feed as f
+                LEFT JOIN talmo.account as a
+                ON f.uniqueId = a.uniqueId
+                ORDER BY feedDate desc
+                LIMIT 5 OFFSET 10'''
     # feed 테이블에서 feedId, feedDate 불러오기
     # account 테이블이랑 uniqueId로 LEFT JOIN해서 name 불러오기
     # 최신순으로 등록된 데이터을 받음
-    sql = """
-    SELECT feedId,
-		date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
-		feedComment,
-		a.name,
-        f.uniqueId,
-        a.img
-    FROM talmo.feed as f 
-    LEFT JOIN talmo.account as a
-    ON f.uniqueId = a.uniqueId
-    ORDER BY feedDate desc
-    """
+    # sql = """
+    # SELECT 	feedId,
+	# 	date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+	# 	feedComment,
+	# 	a.name,
+    #     f.uniqueId
+    # FROM talmo.feed as f
+    # LEFT JOIN talmo.account as a
+    # ON f.uniqueId = a.uniqueId
+    # ORDER BY feedDate desc
+    # """
     uniqueId = session['uniqueId']
-
     curs.execute(sql)
     rows = curs.fetchall()
 
-    newRows = [0] * len(rows)
-
-    for i in range(len(rows)):
-        newRows[i] = [0] * 6
-        newRows[i][0] = rows[i][0]
-        newRows[i][1] = rows[i][1]
-        newRows[i][2] = rows[i][2]
-        newRows[i][3] = rows[i][3]
-        newRows[i][4] = rows[i][4]
-        if rows[i][5] != None:
-            b64 = base64.b64encode(rows[i][5]).decode('utf-8')
-            newRows[i][5] = b64
-        else:
+    newRows = [0] * len(rows)	
+    for i in range(len(rows)):	
+        newRows[i] = [0] * 6	
+        newRows[i][0] = rows[i][0]	
+        newRows[i][1] = rows[i][1]	
+        newRows[i][2] = rows[i][2]	
+        newRows[i][3] = rows[i][3]	
+        newRows[i][4] = rows[i][4]	
+        if rows[i][5] != None:	
+            b64 = base64.b64encode(rows[i][5]).decode('utf-8')	
+            newRows[i][5] = b64	
+        else:	
             newRows[i][5] = rows[i][5]
+
+
+    db.commit()	
+    db.close()	
+    return [uniqueId, newRows]
+
+# 프로필 사진 마이페이지에 불러오기
+@app.route('/myImg', methods=["GET"])
+def getProfileImg():
+    db = getDB()
+    curs = db.cursor()
+
+    sql = """SELECT img FROM talmo.account WHERE uniqueId = %s"""
+
+    uniqueId = session['uniqueId']
+    curs.execute(sql, (uniqueId))
+    row = curs.fetchone()
+
+    binary = row[0]
+    b64 = base64.b64encode(binary).decode('utf-8')
 
     db.commit()
     db.close()
 
-    return [uniqueId, newRows]
+    return b64
+
+
 
 
 # 피드 댓글을 DB에 등록하기

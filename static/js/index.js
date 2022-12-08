@@ -1,19 +1,66 @@
+
 $(document).ready(function () {
     // index.html이 로딩 되었으면 피드 불러오기
-    getFeed();
+    getFeed(1);
 })
 
 
+//  페이지 시작, 새로고침 시 작동 --------------------
+$(document).ready(() => {
+    let pagenumber = localStorage.getItem('pagenumber')
+    if (!pagenumber) {
+        getFeed(1)
+    } else {
+        getFeed(parseInt(pagenumber))
+    }
+    document.getElementById('page-1').addEventListener('click', () => {
+        console.log('yes')
+        localStorage.setItem('pagenumber', 1)
+        getFeed(1)
+    })
+
+
+    document.getElementById('page-2').addEventListener('click', () => {
+        console.log('yes')
+        localStorage.setItem('pagenumber', 2)
+        getFeed(2)
+    })
+
+    document.getElementById('page-3').addEventListener('click', () => {
+        console.log('yes')
+        localStorage.setItem('pagenumber', 3)
+        getFeed(3)
+    })
+    // $('#page-1').on('click', () => {
+    //     console.log('1click')
+    //     localStorage.setItem('pagenumber', 1)
+    //     getFeed(1)
+    // })
+    // $('#page-2').on('click', () => {
+    //     console.log('2click')
+    //     localStorage.setItem('pagenumber', 2)
+    //     getFeed(2)
+    // })
+    // $('#page-3').on('click', () => {
+    //
+    //     localStorage.setItem('pagenumber', 3)
+    //     getFeed(3)
+    // })
+})
+// ---------------------------------------------
 // 피드 불러오기
-function getFeed() {
+function getFeed(parameter) {
+    console.log(parameter)
     $.ajax({
         type: 'GET',
-        url: '/feed',
+        url: `/feed/${parameter}`,
         data: {},
         success: function (response) {
             let rows = response[1]
             const myUniqueId = response[0]
 
+            $('#feedList').empty()
+            console.log(response)
             for (let i = 0; i < rows.length; i++) {
                 let feedId = rows[i][0]
                 let date = rows[i][1]
@@ -25,15 +72,12 @@ function getFeed() {
                 // div id가 숫자로만 구성될 수 없으니 feedId# 으로 수정
                 let divFeedId = 'feedId' + feedId
                 let divFeedCommentId = 'feedCommentId' + feedId
-
                 let temp_html = ``
-
                 // 로그인된 유저와 피드 댓글에 등록된 uniqueId가 같으면
                 // 수정/삭제 버튼 보이기
                 if (myUniqueId === uniqueId) {
                     // 받은 정보를 HTML로 전환
-                    temp_html = `
-                    <div class="list-group mt-2 position-relative" id="${divFeedId}">
+                    temp_html = `<div class="list-group mt-2 position-relative" id="${divFeedId}">
                         <a href="#" class="list-group-item">
                             <div class="w-100">
                                 <div><img height="50" style='float: left'
@@ -72,7 +116,6 @@ function getFeed() {
                             <p class="mb-1" id="${divFeedCommentId}">${comment}</p>
                         </a>
                     </div>`
-
                 }
                 $('#feedList').append(temp_html)
             }
@@ -86,7 +129,6 @@ function saveComment() {
     let comment = $('#inputComment').val()
     let date = new Date()
     // 로그인된 유저의 uniqueId 받아와야함
-    // let uid = 
 
     // MySQL의 DATETIME 포맷으로 수정: 'YYYY-MM-DD hh:mm:ss'
     date = date.getUTCFullYear() + '-' +
