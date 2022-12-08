@@ -1,5 +1,9 @@
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+@import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
 
+* {
+  font-family: 'Gamja Flower', cursive;
+}
 /* Document
    ========================================================================== */
 
