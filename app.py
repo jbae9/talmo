@@ -16,11 +16,6 @@ app = Flask(__name__)
 
 app.secret_key = 'my secret key'
 
-connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
-
-cursor = connection.cursor()
-
-
 def getDB():
     db = pymysql.connect(host='localhost', user='root', db='talmo', password='sksms9604', charset='utf8')
     return db
@@ -29,15 +24,15 @@ def getDB():
 # 로그인
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    connection = mysql.connector.connect(host='localhost', user='root', db='talmo', password='sksms9604')
-    cursor = connection.cursor()
+    db = getDB()
+    curs = db.cursor()
 
     msg = ''
     if request.method == 'POST' and 'id' in request.form and 'pw' in request.form:
         id = request.form['id']
         pw = request.form['pw']
-        cursor.execute('SELECT * FROM account WHERE id = %s', [id])
-        account = cursor.fetchone()
+        curs.execute('SELECT * FROM account WHERE id = %s', [id])
+        account = curs.fetchone()
         pw9 = bcrypt.checkpw(pw.encode('utf-8'), account[2].encode('utf-8'))
 
         if (account) and (pw9 == True):
@@ -64,9 +59,11 @@ def logout():
 # 로그인 됬을 때 메인페이지로 이동 id=session['id']
 @app.route('/index')
 def index():
+    db = getDB()
+    curs = db.cursor()
     if 'loggedin' in session:
-        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
-        account = cursor.fetchone()
+        curs.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = curs.fetchone()
         return render_template('index.html', account=account)
     return redirect(url_for('login'))
 
@@ -86,9 +83,11 @@ def signUp():
 # 회원정보 수정 눌렀을 때 [회원정보 수정] 페이지 이동
 @app.route('/editAccount')
 def edit():
+    db = getDB()
+    curs = db.cursor()
     if 'loggedin' in session:
-        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
-        account = cursor.fetchone()
+        curs.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = curs.fetchone()
         return render_template('editAccount.html', account=account)
     return redirect(url_for('login'))
 
@@ -96,9 +95,11 @@ def edit():
 # 마이페이지
 @app.route('/mypage')
 def mypage():
+    db = getDB()
+    curs = db.cursor()
     if 'loggedin' in session:
-        cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
-        account = cursor.fetchone()
+        curs.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+        account = curs.fetchone()
         return render_template('myPage.html', account=account)
     return redirect(url_for('login'))
 
@@ -106,7 +107,8 @@ def mypage():
 # 회원정보 수정
 @app.route('/editAccount', methods=['GET', 'POST'])
 def editAccount():
-
+    db = getDB()
+    curs = db.cursor()
     if request.method == 'POST' and 'name' in request.form and 'phone' in request.form and 'email' in request.form:
         name = request.form['name']
         phone = request.form['phone']
@@ -114,28 +116,30 @@ def editAccount():
 
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             msg = '⚠경고: 이메일 형식이 잘못되었습니다.'
-            account = cursor.fetchone()
+            account = curs.fetchone()
             return render_template('editAccount.html', msg=msg, account=account)
         
         elif not re.match(r'^010|011|070-\d{3,4}-\d{4}$', phone):
             msg = '⚠경고: 휴대폰 번호 형식이 잘못되었습니다.'
-            cursor.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
-            account = cursor.fetchone()
+            curs.execute('SELECT * FROM account WHERE id = %s', (session['id'],))
+            account = curs.fetchone()
             return render_template('editAccount.html', msg=msg, account=account)
         
         else:
-            cursor.execute('UPDATE account SET name = %s, phone = %s, email = %s WHERE id = %s', (name, phone, email, session['id'],))
-            connection.commit()
+            curs.execute('UPDATE account SET name = %s, phone = %s, email = %s WHERE id = %s', (name, phone, email, session['id'],))
+            db.commit()
             return redirect(url_for('mypage'))
 
 
 # 회원탈퇴
 @app.route('/removeUser')
 def removeUser():
+    db = getDB()
+    curs = db.cursor()
     if 'loggedin' in session:
-        cursor.execute('DELETE FROM account WHERE id = %s', (session['id'],))
-        connection.commit()
-        connection.close()
+        curs.execute('DELETE FROM account WHERE id = %s', (session['id'],))
+        db.commit()
+        db.close()
     return redirect(url_for('login'))
 
 
