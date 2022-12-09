@@ -150,7 +150,7 @@ def getFeedDB(page_id):
     curs = db.cursor()
     if page_id == 1:
         sql = '''SELECT feedId,
-                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    date_format(`feedDate`, '%Y-%c-%d %H:%i') as feedDate,
                     feedComment,
                     a.name,
                     f.uniqueId,
@@ -162,7 +162,7 @@ def getFeedDB(page_id):
                 LIMIT 5 OFFSET 0'''
     if page_id == 2:
         sql = '''SELECT feedId,
-                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    date_format(`feedDate`, '%Y-%c-%d %H:%i') as feedDate,
                     feedComment,
                     a.name,
                     f.uniqueId,
@@ -174,7 +174,7 @@ def getFeedDB(page_id):
                 LIMIT 5 OFFSET 5'''
     if page_id == 3:
         sql = '''SELECT feedId,
-                    date_format(`feedDate`, '%Y-%c-%d %h:%i %p') as feedDate,
+                    date_format(`feedDate`, '%Y-%c-%d %H:%i') as feedDate,
                     feedComment,
                     a.name,
                     f.uniqueId,
